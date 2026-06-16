@@ -24,18 +24,14 @@
 
 <!-- ================= PROLOGUE ================= -->
 <div id="prologue" class="screen hidden">
-    <p>Scory: Welcome.</p>
-    <p>Scory: Your entry has already been recorded.</p>
-
-    <button onclick="goScoryIntro()">Continue</button>
+    <p id="prologueText">Scory: Welcome.</p>
+    <button onclick="nextPrologue()">Continue</button>
 </div>
 
 <!-- ================= SCORY INTRO ================= -->
 <div id="scoryIntro" class="screen hidden">
-    <p>Scory: I will guide you through this place.</p>
-    <p>Scory: Nothing here requires fear.</p>
-
-    <button onclick="goQ1()">Continue</button>
+    <p id="scoryText">Scory: I will guide you through this place.</p>
+    <button onclick="nextScory()">Continue</button>
 </div>
 
 <!-- ================= QUESTION 1 ================= -->
@@ -56,20 +52,20 @@
     <button onclick="answerQ2(2)">I’m not sure</button>
 </div>
 
-<!-- ================= ILLUSION CHOICE ================= -->
+<!-- ================= ILLUSION ================= -->
 <div id="illusion" class="screen hidden">
     <p>If something stayed in your mind longer than expected… what is it?</p>
 
-    <button onclick="illusion(0)">Memory</button>
-    <button onclick="illusion(1)">Feeling</button>
-    <button onclick="illusion(2)">Something else</button>
+    <button onclick="illusionChoice(0)">Memory</button>
+    <button onclick="illusionChoice(1)">Feeling</button>
+    <button onclick="illusionChoice(2)">Something else</button>
 </div>
 
 <!-- ================= CONVERGENCE ================= -->
 <div id="convergence" class="screen hidden">
     <p>Scory: We are nearing the end of your responses.</p>
 
-    <button onclick="checkEnding()">Proceed</button>
+    <button onclick="goEnding()">Proceed</button>
 </div>
 
 <!-- ================= ENDING ================= -->
@@ -108,6 +104,8 @@
     <p>Maybal</p>
     <p>Mira</p>
 
+    <br>
+    <button onclick="restartGame()">Restart</button>
 </div>
 
 <!-- ================= SCRIPT ================= -->
