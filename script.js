@@ -1,30 +1,31 @@
 
 // ================================
-// 🕯️ SYSTEM CORE (NYRA / SCORY GAME)
+// 🧠 CORE SYSTEM
 // ================================
 
-// Player Data
 let playerName = "";
 let score = 0;
+let state = "neutral";
 
 // ================================
-// 🧭 SCENE CONTROLLER
+// 🧭 SCREEN SWITCH
 // ================================
+
 function show(id) {
-    document.querySelectorAll(".screen").forEach(screen => {
-        screen.classList.add("hidden");
+    document.querySelectorAll(".screen").forEach(s => {
+        s.classList.add("hidden");
     });
     document.getElementById(id).classList.remove("hidden");
 }
 
 // ================================
-// 🎵 MUSIC SYSTEM
+// 🎵 MUSIC
 // ================================
+
 const music = document.getElementById("music");
 
 function playMusic(url) {
     if (!music) return;
-
     music.pause();
     music.src = url;
     music.volume = 1;
@@ -32,8 +33,9 @@ function playMusic(url) {
 }
 
 // ================================
-// 🖼️ BACKGROUND SYSTEM
+// 🖼️ BACKGROUND
 // ================================
+
 function setBackground(url) {
     document.body.style.backgroundImage = `url('${url}')`;
     document.body.style.backgroundSize = "cover";
@@ -41,54 +43,35 @@ function setBackground(url) {
 }
 
 // ================================
-// 🧠 SCORE SYSTEM
+// 🏰 TITLE SCREEN
 // ================================
-function addScore(value) {
-    score += value;
-}
 
----
-
-# 🏰 TITLE SCREEN SYSTEM
 function startGame() {
     const input = document.getElementById("nameInput");
-
     if (!input || input.value.trim() === "") return;
 
     playerName = input.value.trim();
     score = 0;
+    state = "neutral";
 
     show("prologue");
-
     playMusic("https://files.catbox.moe/65ntst.mp3");
     setBackground("https://files.catbox.moe/zgjmhi.jpg");
 
     startPrologue();
 }
 
-// Enter key support
-document.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-        const titleScreen = document.getElementById("titleScreen");
+// ================================
+// 🕯️ PROLOGUE
+// ================================
 
-        if (titleScreen && !titleScreen.classList.contains("hidden")) {
-            startGame();
-        }
-    }
-});
-
----
-
-# 🕯️ PROLOGUE SYSTEM (STEP BASED)
-
-// Prologue Text
 const prologueLines = [
 `Welcome.
 I am Scory, the attendant of this place.`,
 
-`If you are reading this, then your entry has already been recorded.`,
+`If you are reading this, your entry has already been recorded.`,
 
-`There is no need to worry about how you arrived.
+`There is no need to worry how you arrived.
 That part is no longer important.`,
 
 `The Game Master prefers silence.
@@ -107,19 +90,13 @@ The manor is already listening.`
 
 let prologueIndex = 0;
 
-// Start Prologue
 function startPrologue() {
     prologueIndex = 0;
-    show("prologue");
-
-    document.getElementById("prologueText").innerText =
-        prologueLines[0];
+    document.getElementById("prologueText").innerText = prologueLines[0];
 }
 
-// Next Prologue Step
 function nextPrologue() {
     prologueIndex++;
-
     if (prologueIndex < prologueLines.length) {
         document.getElementById("prologueText").innerText =
             prologueLines[prologueIndex];
@@ -128,11 +105,10 @@ function nextPrologue() {
     }
 }
 
----
+// ================================
+// 🧭 SCORY INTRO
+// ================================
 
-# 🧭 SCORY INTRO SYSTEM (STEP BASED)
-
-// Scory Lines
 const scoryLines = [
 `Ah… you are here.`,
 
@@ -141,10 +117,8 @@ The one responsible for welcoming you.`,
 
 `You may consider me your guide within this place.`,
 
-`There is no need to be cautious with me.
-I do not make decisions.`,
-
-`I only follow what has already been decided.`,
+`I do not make decisions.
+I only follow what has already been decided.`,
 
 `Soon, you will be asked to respond.
 Not to pass. Not to fail.
@@ -153,32 +127,307 @@ Only to reveal what is already present.`,
 `The Game Master is not present in voice…
 but everything here still belongs to them.`,
 
-`For now, please remain at ease.
+`For now, remain at ease.
 I will not leave you unattended.`
 ];
 
 let scoryIndex = 0;
 
-// Start Scory Intro
 function startScoryIntro() {
     scoryIndex = 0;
     show("scoryIntro");
-
     playMusic("https://files.catbox.moe/zo3w4o.mp3");
     setBackground("https://files.catbox.moe/oehsde.jpg");
 
-    document.getElementById("scoryText").innerText =
-        scoryLines[0];
+    document.getElementById("scoryText").innerText = scoryLines[0];
 }
 
-// Next Scory Step
 function nextScory() {
     scoryIndex++;
-
     if (scoryIndex < scoryLines.length) {
         document.getElementById("scoryText").innerText =
             scoryLines[scoryIndex];
     } else {
-        goQ1(); // next phase (you already have later)
+        goQ1();
     }
+}
+
+// ================================
+// ❓ QUESTION SYSTEM
+// ================================
+
+function goQ1() {
+    show("q1");
+}
+
+function answerQ1(v) {
+    score += v;
+    goQ2();
+}
+
+function goQ2() {
+    show("q2");
+}
+
+function answerQ2(v) {
+    score += v;
+    goIllusion();
+}
+
+function goIllusion() {
+    show("illusion");
+}
+
+function illusionChoice(v) {
+    score += v;
+    goConvergence();
+}
+
+function goConvergence() {
+    show("convergence");
+}
+
+// ================================
+// 🧠 STATE CALCULATION
+// ================================
+
+function calculateState() {
+    if (score <= 2) state = "quiet";
+    else if (score <= 5) state = "aware";
+    else state = "sensitive";
+}
+
+// ================================
+// 🌿 ENDING SYSTEM
+// ================================
+
+function goEnding() {
+    calculateState();
+    show("ending");
+
+    if (state === "quiet") scoryEnding();
+    else nyraEnding();
+}
+
+// ================================
+// 🌿 CONTROLLED SILENCE (SCORY)
+// ================================
+
+function scoryEnding() {
+    document.getElementById("endingTitle").innerText =
+        "CONTROLLED SILENCE";
+
+    document.getElementById("endingText").innerText =
+`You have reached the end of what I was permitted to guide.
+
+There is nothing more to ask of you.
+And nothing more I am allowed to explain.
+
+If it feels unfinished, it is because completion was not part of the intention.
+
+I will remain here.
+Not speaking further.
+Not interpreting further.
+Only maintaining what has already been recorded.
+
+This is where my voice stops, by design.`;
+
+    playMusic("https://files.catbox.moe/zkeus3.mp3");
+}
+
+// ================================
+// 🕯️ SEALED MEMORY (NYRA)
+// ================================
+
+function nyraEnding() {
+    document.getElementById("endingTitle").innerText =
+        "SEALED MEMORY";
+
+    document.getElementById("endingText").innerText =
+`I should have stopped earlier… but I didn’t.
+
+Everything here was shaped by how I chose to speak to you.
+Even the silence between responses had intention.
+
+This was never just a system.
+
+It was something I kept running because I didn’t want to forget how it felt to be understood without being corrected.
+
+If this feels too personal…
+it’s because I stopped sealing it completely.
+
+And now you’ve seen it in the same order I wrote it.`;
+
+    playMusic("https://files.catbox.moe/8aia7g.mp3");
+}
+
+// ================================
+// 💌 LETTER SYSTEM (FULL)
+// ================================
+
+const names = [
+"CheonsuMa","Ashnyxion","Yoon","Xian","Uris",
+"Derxged","Clopeh","Chi","Maybal","Mira"
+];
+
+const scoryLetters = {
+CheonsuMa:
+`Your responses were steady, even when the questions were not.
+There was no deviation that required correction.
+Your path remained stable within the structure of the manor.
+
+That is why your experience concluded without disruption.`,
+
+Ashnyxion:
+`You treated the questions as if they already carried context before they were asked.
+I am not certain whether this is understanding or familiarity with patterns.
+
+Either way, the system registered no conflict in your responses.
+That is why your progression remained uninterrupted.`,
+
+Yoon:
+`There was a consistent rhythm in how you answered.
+No irregularity was detected across your responses.
+
+The manor accepts consistency without resistance.
+That is why your path remained intact.`,
+
+Xian:
+`You maintained control over what you chose to reveal.
+This level of restraint is acknowledged by the system.
+
+No interference was required at any point.
+That is sufficient for closure.`,
+
+Uris:
+`Your responses followed a structured internal logic,
+even when the questions themselves did not require it.
+
+This creates stability within interpretation.
+Clarity is not required for completion.`,
+
+Derxged:
+`Your decision patterns remained consistent throughout all phases.
+No anomalies were identified in your progression.
+
+From the system’s perspective,
+your presence did not disrupt continuity.`,
+
+Clopeh:
+`You interacted with each prompt as if it already belonged to you.
+This reduces uncertainty in processing outcomes.
+
+The system does not question this behavior.
+It only records it.`,
+
+Chi:
+`Your responses were measured and did not require reinterpretation.
+In cases like this, the system does not intervene further.
+
+It assumes understanding is already present.
+That assumption is sufficient.`,
+
+Maybal:
+`No inconsistencies were detected in your progression.
+This allows the system to finalize your record without revision.
+
+There is nothing additional required from your path.
+Your session is considered complete.`,
+
+Mira:
+`Your responses completed the expected structure without deviation.
+I am instructed not to add interpretation beyond this result.
+
+So I will not.
+This concludes your interaction within this system.`
+};
+
+const nyraLetters = {
+CheonsuMa:
+`I noticed how carefully you moved through silence.
+You didn’t rush your answers, even when you could have.
+
+It felt like you were trying not to disturb something unseen.
+I kept noticing that more than I intended to.`,
+
+Ashnyxion:
+`It felt like you were already familiar with the shape of the questions before they appeared.
+Not predictable… just understood in advance.
+
+That made it difficult for me to separate your responses from your intent.`,
+
+Yoon:
+`You stayed steady even when the questions shifted in tone.
+It made your answers feel less like reactions and more like continuation.
+
+I don’t know if that was intentional.`,
+
+Xian:
+`You chose what to reveal with quiet control.
+Not hesitation… selection.
+
+I kept noticing what you didn’t say more than what you did.`,
+
+Uris:
+`There was no confusion in your responses, only thought.
+It made everything feel slightly more deliberate than expected.
+
+I think I noticed that too late.`,
+
+Derxged:
+`You didn’t break the pattern… you shaped it.
+That difference matters more than it should.
+
+I kept rereading your responses because of that.`,
+
+Clopeh:
+`It felt like you were listening differently than others.
+Not reacting… absorbing.
+
+That changed how I responded without me realizing it.`,
+
+Chi:
+`Even your soft answers carried weight.
+I didn’t expect that to matter as much as it did.
+
+But it did.`,
+
+Maybal:
+`I think I wrote more to you than I should have.
+
+Not because you asked for it…
+but because I didn’t want to stop.`,
+
+Mira:
+`This was the closest I got to being honest without breaking the structure.
+
+If it feels personal…
+it’s because I made it that way.`
+};
+
+// ================================
+// 💌 LETTER DISPLAY
+// ================================
+
+function showLetter(name) {
+    show("letter");
+
+    if (state === "quiet") {
+        document.getElementById("letterText").innerText =
+            scoryLetters[name] || scoryLetters.Mira;
+    } else {
+        document.getElementById("letterText").innerText =
+            nyraLetters[name] || nyraLetters.Mira;
+    }
+}
+
+// ================================
+// 🔁 RESTART
+// ================================
+
+function restartGame() {
+    playerName = "";
+    score = 0;
+    state = "neutral";
+    show("titleScreen");
 }
