@@ -107,10 +107,9 @@ if (!isValid) {
     "Entry rejected. You are not listed in the memory index.";
 
     if (glitchMessage) {
-        glitchMessage.innerText =
-        "THE MANOR DOES NOT RECOGNIZE THIS NAME".  }
-
-    triggerGlitchReject("/// ENTRY NOT FOUND ///");
+    glitchMessage.innerText =
+    "THE MANOR DOES NOT RECOGNIZE THIS NAME";
+}
 
     return;
 }
@@ -497,9 +496,17 @@ it’s because I made it that way.`
 // ================================
 
 function showLetter() {
-    show("letter");
-}
 
+    show("letter");
+
+    const text = document.getElementById("letterText");
+
+    if (state === "quiet") {
+        text.innerText = scoryLetters[playerName];
+    } else {
+        text.innerText = nyraLetters[playerName];
+    }
+}
 function showCredits() {
     show("credits");
 }
@@ -508,28 +515,27 @@ function showCredits() {
 // 🔁 RESTART SYSTEM
 // ================================
 function restartGame() {
+
     playerName = "";
     score = 0;
+    state = "quiet";
+
+    document.getElementById("nameInput").value = "";
+
+    const error = document.getElementById("nameError");
+    if (error) error.style.display = "none";
+
+    const glitch = document.getElementById("glitchMessage");
+    if (glitch) glitch.innerText = "";
 
     show("titleScreen");
 
-    // reset music
     if (music) {
         music.pause();
         music.currentTime = 0;
     }
 }
-// ================================
-// 🕯️ PROLOGUE / SCORY CONTROLLERS (FIX)
-// ================================
 
-function nextPrologue() {
-    nextPrologueStep();
-}
-
-function nextScory() {
-    nextScoryStep();
-}
 function triggerGlitchReject(message) {
     const error = document.getElementById("nameError");
     const screen = document.getElementById("titleScreen");
