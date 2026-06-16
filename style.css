@@ -177,9 +177,12 @@ p {
 
     border: 1px solid white;
 
-    min-height: 120px;
-    font-size: 16px;
-    line-height: 1.5;
+    min-height: 140px;
+    max-height: 45vh;
+
+    overflow-y: auto;
+
+    text-align: left;
 }
 
 /* ▶ BUTTON */
@@ -210,12 +213,18 @@ p {
 ================================ */
 
 #credits {
-    font-size: 16px;
+    text-align: center;
+}
+
+#credits p {
+    margin: 6px 0;
+    letter-spacing: 1px;
 }
 
 #credits h2 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 24px;
+    letter-spacing: 2px;
 }
 
 /* ================================
@@ -280,9 +289,24 @@ body {
 }
 
 @keyframes flash {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(3); }
-    100% { filter: brightness(0.5); }
+    0% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(3);
+    }
+
+    100% {
+        filter: brightness(0.5);
+    }
+}
+#glitchMessage {
+    margin-top: 10px;
+    color: crimson;
+    font-size: 14px;
+    letter-spacing: 2px;
+    min-height: 20px;
 }
 /* ================================
    🕯️ OPTIONAL FEEL (slight fade vibe)
@@ -297,4 +321,6 @@ body {
     to { opacity: 1; transform: scale(1); }
 }
 
-
+#scoryIntro {
+    justify-content: flex-end;
+}
