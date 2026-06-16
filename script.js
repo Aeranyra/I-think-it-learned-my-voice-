@@ -524,18 +524,20 @@ function showLetter() {
     const text = document.getElementById("letterText");
 
     text.style.opacity = 0;
-text.style.transform = "scaleY(0.5)";
+    text.style.transform = "scaleY(0.5)";
 
-setTimeout(() => {
-    text.style.transition = "0.6s ease";
-    text.style.opacity = 1;
-    text.style.transform = "scaleY(1)";
+    setTimeout(() => {
+        text.style.transition = "0.6s ease";
+        text.style.opacity = 1;
+        text.style.transform = "scaleY(1)";
 
-    typeText(text, scoryLetters[playerName], 25);
-}, 200);
-    text.innerText = nyraLetters[playerName],25);
-}, 200);
-    }
+        if (state === "quiet") {
+            typeText(text, scoryLetters[playerName], 25);
+        } else {
+            typeText(text, nyraLetters[playerName], 25);
+        }
+
+    }, 200);
 }
 function showCredits() {
     show("credits");
