@@ -15,7 +15,15 @@ function show(id) {
     document.querySelectorAll(".screen").forEach(s => {
         s.classList.add("hidden");
     });
-    document.getElementById(id).classList.remove("hidden");
+
+    const target = document.getElementById(id);
+
+    if (!target) return;
+
+    target.classList.remove("hidden");
+
+    // 🔴 reset scroll position (mobile fix)
+    window.scrollTo(0, 0);
 }
 
 // ================================
@@ -50,7 +58,9 @@ function startGame() {
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
 
-    if (!input || input.value.trim() === "") return;
+    if (!input) return;
+
+    const rawName = input.value.trim();
 
     const allowedNames = [
         "CheonsuMa",
@@ -65,24 +75,27 @@ function startGame() {
         "Mira"
     ];
 
-    playerName = input.value.trim();
+    // ❌ HARD BLOCK (case + spacing safe)
+    const isValid = allowedNames.includes(rawName);
 
-    // ❌ INVALID NAME CHECK
-    if (!allowedNames.includes(playerName)) {
+    if (!isValid) {
+        error.style.display = "block";
+        error.innerText = "Entry rejected. You are not listed in the memory index.";
 
-    triggerGlitchReject(
-    "The manor does not recognize this name."
-);
+        triggerGlitchReject("/// ENTRY NOT FOUND ///");
 
-    return;
+        return; // 🔴 THIS is the hard stop
     }
-    // ✔ VALID NAME → continue game
+
+    // ✅ VALID ENTRY ONLY BEYOND THIS POINT
     error.style.display = "none";
 
+    playerName = rawName;
     score = 0;
     state = "quiet";
 
     show("prologue");
+
     playMusic("https://files.catbox.moe/65ntst.mp3");
     setBackground("https://files.catbox.moe/zgjmhi.jpg");
 
@@ -120,16 +133,19 @@ let prologueIndex = 0;
 
 function startPrologue() {
     prologueIndex = 0;
-    document.getElementById("prologueText").innerText = prologueLines[0];
+
+    // reset text BEFORE showing flow
+    const text = document.getElementById("prologueText");
+
+    if (text) {
+        text.innerText = prologueLines[0];
+    }
+
+    // safety: remove leftover glitch states (if any)
+    document.getElementById("prologue").classList.remove("glitch-shake");
+
+    show("prologue");
 }
-
-function nextPrologueStep() {
-    prologueIndex++;
-
-    if (prologueIndex < prologueLines.length) {
-        document.getElementById("prologueText").innerText =
-            prologueLines[prologueIndex];
-    } else {
         startScoryIntro();
     }
 }
