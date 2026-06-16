@@ -7,6 +7,22 @@ let playerName = "";
 let score = 0;
 let state = "quiet";
 
+function typeText(element, text, speed = 25, callback = null) {
+    if (!element) return;
+
+    let i = 0;
+    element.innerText = "";
+
+    const interval = setInterval(() => {
+        element.innerText += text.charAt(i);
+        i++;
+
+        if (i >= text.length) {
+            clearInterval(interval);
+            if (callback) callback();
+        }
+    }, speed);
+}
 // ================================
 // 🧭 SCREEN SWITCH
 // ================================
@@ -133,22 +149,27 @@ let prologueIndex = 0;
 function startPrologue() {
     prologueIndex = 0;
 
-    // reset text BEFORE showing flow
     const text = document.getElementById("prologueText");
 
-    if (text) {
-        text.innerText = prologueLines[0];
-    }
-
+    typeText(text, prologueLines[0], 28);
+}
     // safety: remove leftover glitch states (if any)
     document.getElementById("prologue").classList.remove("glitch-shake");
 
     show("prologue");
 }
+function nextPrologue() {
+    prologueIndex++;
+
+    const text = document.getElementById("prologueText");
+
+    if (prologueIndex < prologueLines.length) {
+        typeText(text, prologueLines[prologueIndex], 28);
+    } else {
         startScoryIntro();
     }
 }
-
+        
 // ================================
 // 🧭 SCORY INTRO
 // ================================
@@ -180,18 +201,22 @@ let scoryIndex = 0;
 function startScoryIntro() {
     scoryIndex = 0;
     show("scoryIntro");
-    playMusic("https://files.catbox.moe/zo3w4o.mp3");
-    setBackground("https://files.catbox.moe/oehsde.jpg");
 
-    document.getElementById("scoryText").innerText = scoryLines[0];
+    setBackground("https://files.catbox.moe/oehsde.jpg");
+    playMusic("https://files.catbox.moe/zo3w4o.mp3");
+
+    const text = document.getElementById("scoryText");
+
+    typeText(text, scoryLines[0], 28);
 }
 
-function nextScoryStep() {
+function nextScory() {
     scoryIndex++;
 
+    const text = document.getElementById("scoryText");
+
     if (scoryIndex < scoryLines.length) {
-        document.getElementById("scoryText").innerText =
-            scoryLines[scoryIndex];
+        typeText(text, scoryLines[scoryIndex], 28);
     } else {
         goQ1();
     }
