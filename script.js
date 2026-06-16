@@ -17,15 +17,14 @@ function show(id) {
     });
 
     const target = document.getElementById(id);
-
     if (!target) return;
 
-    target.classList.remove("hidden");
-
-    // 🔴 reset scroll position (mobile fix)
-    window.scrollTo(0, 0);
+    // slight delay for smoother transition
+    setTimeout(() => {
+        target.classList.remove("hidden");
+        window.scrollTo(0, 0);
+    }, 50);
 }
-
 // ================================
 // 🎵 MUSIC
 // ================================
