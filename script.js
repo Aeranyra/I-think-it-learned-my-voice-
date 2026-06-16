@@ -522,12 +522,16 @@ function showLetter() {
 
     const text = document.getElementById("letterText");
 
-    if (state === "quiet") {
-        text.innerText = scoryLetters[playerName];
-    } else {
-        text.innerText = nyraLetters[playerName];
-    }
-}
+    text.style.opacity = 0;
+text.style.transform = "scaleY(0.5)";
+
+setTimeout(() => {
+    text.style.transition = "0.6s ease";
+    text.style.opacity = 1;
+    text.style.transform = "scaleY(1)";
+
+    typeText(text, scoryLetters[playerName], 25);
+}, 200);
 function showCredits() {
     show("credits");
 }
@@ -575,3 +579,22 @@ function triggerGlitchReject(message) {
         document.body.classList.remove("glitch-flash");
     }, 1200);
 }
+
+
+const butterflies = [];
+
+document.addEventListener("mousemove", (e) => {
+    const b = document.createElement("div");
+    b.className = "butterfly";
+
+    b.style.left = e.pageX + "px";
+    b.style.top = e.pageY + "px";
+
+    document.body.appendChild(b);
+
+    butterflies.push(b);
+
+    setTimeout(() => {
+        b.remove();
+    }, 1000);
+});
