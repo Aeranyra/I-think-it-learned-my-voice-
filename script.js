@@ -405,29 +405,31 @@ If it feels personal…
 it’s because I made it that way.`
 };
 
+
 // ================================
-// 💌 LETTER DISPLAY
+// 💌 ENDING FLOW SYSTEM FIX
 // ================================
 
-function showLetter(name) {
+function showLetter() {
     show("letter");
+}
 
-    if (state === "quiet") {
-        document.getElementById("letterText").innerText =
-            scoryLetters[name] || scoryLetters.Mira;
-    } else {
-        document.getElementById("letterText").innerText =
-            nyraLetters[name] || nyraLetters.Mira;
-    }
+function showCredits() {
+    show("credits");
 }
 
 // ================================
-// 🔁 RESTART
+// 🔁 RESTART SYSTEM
 // ================================
-
 function restartGame() {
     playerName = "";
     score = 0;
-    state = "neutral";
+
     show("titleScreen");
+
+    // reset music
+    if (music) {
+        music.pause();
+        music.currentTime = 0;
+    }
 }
