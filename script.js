@@ -532,6 +532,10 @@ setTimeout(() => {
 
     typeText(text, scoryLetters[playerName], 25);
 }, 200);
+    text.innerText = nyraLetters[playerName],25);
+}, 200);
+    }
+}
 function showCredits() {
     show("credits");
 }
