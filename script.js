@@ -98,14 +98,22 @@ function startGame() {
     // ❌ HARD BLOCK (case + spacing safe)
     const isValid = allowedNames.includes(rawName);
 
-    if (!isValid) {
-        error.style.display = "block";
-        error.innerText = "Entry rejected. You are not listed in the memory index.";
+    const glitchMessage = document.getElementById("glitchMessage");
 
-        triggerGlitchReject("/// ENTRY NOT FOUND ///");
+if (!isValid) {
 
-        return; // 🔴 THIS is the hard stop
-    }
+    error.style.display = "block";
+    error.innerText =
+    "Entry rejected. You are not listed in the memory index.";
+
+    if (glitchMessage) {
+        glitchMessage.innerText =
+        "THE MANOR DOES NOT RECOGNIZE THIS NAME".  }
+
+    triggerGlitchReject("/// ENTRY NOT FOUND ///");
+
+    return;
+}
 
     // ✅ VALID ENTRY ONLY BEYOND THIS POINT
     error.style.display = "none";
