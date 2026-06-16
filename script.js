@@ -11,29 +11,29 @@ let typingInterval = null;
 let isTyping = false;
 
 function typeText(element, text, speed = 25, callback = null) {
-
     if (!element) return;
 
-    // ❌ stop previous typing instantly
-    clearInterval(typingInterval);
+    //
 
     isTyping = true;
 
+    if (typingInterval) {
+        clearInterval(typingInterval);
+    }
+
     let i = 0;
-    element.textContent = "";
+    element.innerText = "";
 
     typingInterval = setInterval(() => {
-
-        element.textContent += text[i];
+        element.innerText += text.charAt(i);
         i++;
 
         if (i >= text.length) {
             clearInterval(typingInterval);
+            typingInterval = null;
             isTyping = false;
-
             if (callback) callback();
         }
-
     }, speed);
 }
 // ================================
@@ -165,6 +165,8 @@ function startPrologue() {
 };
 
 function nextPrologue() {
+    if (isTyping) return; // 🚫 prevent spam clicking
+
     prologueIndex++;
 
     const text = document.getElementById("prologueText");
@@ -175,7 +177,6 @@ function nextPrologue() {
         startScoryIntro();
     }
 }
-        
 // ================================
 // 🧭 SCORY INTRO
 // ================================
