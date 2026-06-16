@@ -65,8 +65,7 @@ function stopTyping() {
     }
     isTyping = false;
 }
-
-
+    
 // ================================
 // 🎵 MUSIC
 // ================================
@@ -523,19 +522,35 @@ function showLetter() {
 
     const text = document.getElementById("letterText");
 
+    // 🔥 HARD STOP any previous typing
+    stopTyping();
+
+    // reset visuals
+    text.innerText = "";
+
     text.style.opacity = 0;
     text.style.transform = "scaleY(0.5)";
 
     setTimeout(() => {
+
         text.style.transition = "0.6s ease";
         text.style.opacity = 1;
         text.style.transform = "scaleY(1)";
 
+        let message;
+
         if (state === "quiet") {
-            typeText(text, scoryLetters[playerName], 25);
+            message = scoryLetters[playerName];
         } else {
-            typeText(text, nyraLetters[playerName], 25);
+            message = nyraLetters[playerName];
         }
+
+        // 🧠 safety check
+        if (!message) {
+            message = "No letter found for this name.";
+        }
+
+        typeText(text, message, 25);
 
     }, 200);
 }
