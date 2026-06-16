@@ -105,11 +105,12 @@ p {
 ================================ */
 
 #prologueText,
-#scoryText {
+#scoryText,
+#endingText,
+#letterText {
     font-size: 17px;
-    white-space: pre-line;
-    line-height: 1.7;
-    text-align: left;
+    white-space: pre-wrap;
+    max-width: 600px;
 }
 
 /* ================================
