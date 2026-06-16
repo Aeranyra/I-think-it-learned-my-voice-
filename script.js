@@ -7,6 +7,8 @@ let playerName = "";
 let score = 0;
 let state = "quiet";
 let isLocked = false;
+let phase1Done = false;
+let phase = 0;
 
 function show(id) {
     document.querySelectorAll(".screen").forEach(s => {
@@ -65,7 +67,9 @@ function stopTyping() {
     }
     isTyping = false;
 }
-    
+    function setPhase(p) {
+    phase = p;
+    }
 // ================================
 // 🎵 MUSIC
 // ================================
@@ -95,8 +99,6 @@ function setBackground(url) {
 // ================================
 
 function startGame() {
-console.log("START CLICKED");
-alert("START CLICKED");
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
 
@@ -105,35 +107,37 @@ alert("START CLICKED");
     const rawName = input.value.trim();
 
     const allowedNames = [
-        "CheonsuMa",
-        "Ashnyxion",
-        "Yoon",
-        "Xian",
-        "Uris",
-        "Derxged",
-        "Clopeh",
-        "Chi",
-        "Maybal",
-        "Mira"
+        "CheonsuMa","Ashnyxion","Yoon","Xian","Uris",
+        "Derxged","Clopeh","Chi","Maybal","Mira"
     ];
 
-    // ❌ HARD BLOCK (case + spacing safe)
     const isValid = allowedNames.includes(rawName);
 
     const glitchMessage = document.getElementById("glitchMessage");
 
-if (!isValid) {
+    if (!isValid) {
+        error.style.display = "block";
+        error.innerText = "Entry rejected. You are not listed in the memory index.";
 
-    error.style.display = "block";
-    error.innerText =
-    "Entry rejected. You are not listed in the memory index.";
+        if (glitchMessage) {
+            glitchMessage.innerText = "THE MANOR DOES NOT RECOGNIZE THIS NAME";
+        }
+        return;
+    }
 
-    if (glitchMessage) {
-    glitchMessage.innerText =
-    "THE MANOR DOES NOT RECOGNIZE THIS NAME";
-}
+    error.style.display = "none";
+    glitchMessage.innerText = "";
 
-    return;
+    playerName = rawName;
+    score = 0;
+    state = "quiet";
+
+setPhase(1);
+show("prologue");
+playMusic("https://files.catbox.moe/65ntst.mp3");
+setBackground("https://files.catbox.moe/zgjmhi.jpg");
+startPrologue();
+    startPrologue();
 }
 
     // ✅ VALID ENTRY ONLY BEYOND THIS POINT
@@ -254,9 +258,81 @@ function nextScory() {
 
     if (scoryIndex < scoryLines.length) {
         typeText(text, scoryLines[scoryIndex], 28);
-    } else {
-        goQ1();
-    }
+    else {
+    goEntryResponse();
+}
+}
+// ================================
+// 🧭 PHASE 1 — ENTRY RESPONSE
+// ================================
+
+let phase1Index = 0;
+let phase1State = "unset"; 
+// quiet | aware | sensitive (hidden tracking)
+
+function startPhase1() {
+    phase1Index = 0;
+    show("phase1");
+
+    const text = document.getElementById("phase1Text");
+
+    typeText(text, `Before we continue…
+I will ask something simple.`, 28);
+}
+
+// QUESTION 1
+function nextPhase1_Q1() {
+    const text = document.getElementById("phase1Text");
+
+    typeText(text,
+`There is no correct answer.
+
+Only what you choose to leave behind.
+
+When you are alone…
+what do you usually hear first?`, 28);
+}
+
+// ANSWERS
+function answerPhase1_q1(choice) {
+    // 0 silence | 1 thoughts | 2 someone else
+
+    if (choice === 0) score += 0;
+    if (choice === 1) score += 1;
+    if (choice === 2) score += 2;
+
+    typeText(document.getElementById("phase1Text"),
+`I see.
+
+That response has been recorded.
+
+It reacts differently depending on who answers…
+but I am not allowed to explain how.`, 26, () => {
+        nextPhase1_Q2();
+    });
+}
+
+// QUESTION 2
+function nextPhase1_Q2() {
+    typeText(document.getElementById("phase1Text"),
+`Do you feel more comfortable when something is watching you?`, 26);
+}
+
+function answerPhase1_q2(choice) {
+    // 0 yes | 1 no | 2 unsure
+
+    if (choice === 0) score += 2;
+    if (choice === 1) score += 0;
+    if (choice === 2) score += 1;
+
+    typeText(document.getElementById("phase1Text"),
+`That is… more common than you might expect.
+
+Still, I will not interpret it for you.
+
+Some answers are closer to me than others.`, 26, () => {
+        goQ1(); // continue to your existing system
+    });
 }
 // ================================
 // ❓ QUESTION SYSTEM
