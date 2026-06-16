@@ -13,13 +13,13 @@ let isTyping = false;
 function typeText(element, text, speed = 25, callback = null) {
     if (!element) return;
 
-    //
-
-    isTyping = true;
-
+    // HARD STOP previous typing cleanly
     if (typingInterval) {
         clearInterval(typingInterval);
+        typingInterval = null;
     }
+
+    isTyping = true;
 
     let i = 0;
     element.innerText = "";
@@ -32,9 +32,18 @@ function typeText(element, text, speed = 25, callback = null) {
             clearInterval(typingInterval);
             typingInterval = null;
             isTyping = false;
+
             if (callback) callback();
         }
     }, speed);
+}
+
+function stopTyping() {
+    if (typingInterval) {
+        clearInterval(typingInterval);
+        typingInterval = null;
+    }
+    isTyping = false;
 }
 // ================================
 // 🎵 MUSIC
@@ -149,20 +158,15 @@ The manor is already listening.`
 let prologueIndex = 0;
 
 function startPrologue() {
+    stopTyping();
+
     prologueIndex = 0;
-
     show("prologue");
-
-    // safety: remove leftover glitch states (if any)
-    const prologueScreen = document.getElementById("prologue");
-    if (prologueScreen) {
-        prologueScreen.classList.remove("glitch-shake");
-    }
 
     const text = document.getElementById("prologueText");
 
     typeText(text, prologueLines[0], 28);
-};
+}
 
 function nextPrologue() {
     if (isTyping) return; // 🚫 prevent spam clicking
@@ -206,6 +210,8 @@ I will not leave you unattended.`
 let scoryIndex = 0;
 
 function startScoryIntro() {
+    stopTyping();
+
     scoryIndex = 0;
     show("scoryIntro");
 
@@ -216,7 +222,6 @@ function startScoryIntro() {
 
     typeText(text, scoryLines[0], 28);
 }
-
 function nextScory() {
     if (isTyping) return; // 🚫 block spam clicks
 
