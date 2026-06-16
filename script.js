@@ -69,10 +69,13 @@ function startGame() {
 
     // ❌ INVALID NAME CHECK
     if (!allowedNames.includes(playerName)) {
-        error.style.display = "block";
-        error.innerText = "Access denied. The manor does not recognize you.";
-    }
 
+    triggerGlitchReject(
+    "The manor does not recognize this name."
+);
+
+    return;
+    }
     // ✔ VALID NAME → continue game
     error.style.display = "none";
 
@@ -469,4 +472,22 @@ function nextPrologue() {
 
 function nextScory() {
     nextScoryStep();
+}
+function triggerGlitchReject(message) {
+    const error = document.getElementById("nameError");
+    const screen = document.getElementById("titleScreen");
+
+    // show error
+    error.style.display = "block";
+    error.innerText = message;
+
+    // screen shake
+    screen.classList.add("glitch-shake");
+    document.body.classList.add("glitch-flash");
+
+    // remove effect after short time
+    setTimeout(() => {
+        screen.classList.remove("glitch-shake");
+        document.body.classList.remove("glitch-flash");
+    }, 1200);
 }
