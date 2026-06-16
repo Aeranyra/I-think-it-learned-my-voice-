@@ -31,18 +31,25 @@ Invalid entry. Access denied.
     <button onclick="nextPrologue()">Continue</button>
 </div>
 
+
 <!-- ================= SCORY INTRO ================= -->
-<div class="dialogue-container">
+<div id="scoryIntro" class="screen hidden">
 
-    <div class="speaker-box">
-        Scory
+    <div class="dialogue-container">
+
+        <div class="speaker-box">
+            Scory
+        </div>
+
+        <div class="text-box">
+            <p id="scoryText">I will guide you through this place.</p>
+        </div>
+
+        <button onclick="nextScory()" class="next-btn">
+            Continue
+        </button>
+
     </div>
-
-    <div class="text-box">
-        <p id="scoryText">I will guide you through this place.</p>
-    </div>
-
-    <button onclick="nextScory()" class="next-btn">Continue</button>
 
 </div>
 
