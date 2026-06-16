@@ -45,6 +45,25 @@ function stopTyping() {
     }
     isTyping = false;
 }
+
+function show(id) {
+    document.querySelectorAll(".screen").forEach(s => {
+        s.classList.add("hidden");
+    });
+
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    target.classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+
+    if (id === "letter" || id === "credits") {
+        document.body.style.overflow = "auto";
+    } else {
+        document.body.style.overflow = "hidden";
+    }
+}
 // ================================
 // 🎵 MUSIC
 // ================================
