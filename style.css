@@ -214,6 +214,9 @@ p {
     line-height: 1.6;
 }
 
+#letterText {
+    transform-origin: top;
+}
 /* ================================
    🌫️ CREDITS
 ================================ */
@@ -329,4 +332,33 @@ body {
 
 #scoryIntro {
     justify-content: flex-end;
+}
+
+
+.butterfly {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-image: url("https://files.catbox.moe/1rf6iw.png");
+    background-size: cover;
+    pointer-events: none;
+    animation: fadeOut 1s linear forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(1.5); }
+}
+#scoryImage {
+    width: 180px;
+    display: block;
+    margin: 10px auto;
+    filter: drop-shadow(0 0 10px black);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
 }
