@@ -24,11 +24,28 @@ Invalid entry. Access denied.
     <div id="glitchMessage"></div>
     <button onclick="startGame()">START</button>
 </div>
-
+    
 <!-- ================= PROLOGUE ================= -->
 <div id="prologue" class="screen hidden">
-    <p id="prologueText">Scory: Welcome.</p>
-    <button onclick="nextPrologue()">Continue</button>
+
+    <div class="dialogue-container">
+
+        <div class="speaker-box">
+            Scory
+        </div>
+
+        <div class="text-box">
+            <p id="prologueText">
+                Welcome.
+            </p>
+        </div>
+
+        <button onclick="nextPrologue()" class="next-btn">
+            Continue
+        </button>
+
+    </div>
+
 </div>
 
 
