@@ -48,11 +48,36 @@ function setBackground(url) {
 
 function startGame() {
     const input = document.getElementById("nameInput");
+    const error = document.getElementById("nameError");
+
     if (!input || input.value.trim() === "") return;
 
+    const allowedNames = [
+        "CheonsuMa",
+        "Ashnyxion",
+        "Yoon",
+        "Xian",
+        "Uris",
+        "Derxged",
+        "Clopeh",
+        "Chi",
+        "Maybal",
+        "Mira"
+    ];
+
     playerName = input.value.trim();
+
+    // ❌ INVALID NAME CHECK
+    if (!allowedNames.includes(playerName)) {
+        error.style.display = "block";
+        error.innerText = "Access denied. The manor does not recognize you.";
+    }
+
+    // ✔ VALID NAME → continue game
+    error.style.display = "none";
+
     score = 0;
-    state = "neutral";
+    state = "quiet";
 
     show("prologue");
     playMusic("https://files.catbox.moe/65ntst.mp3");
