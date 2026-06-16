@@ -6,6 +6,7 @@
 let playerName = "";
 let score = 0;
 let state = "quiet";
+let isLocked = false;
 
 function typeText(element, text, speed = 25, callback = null) {
     if (!element) return;
@@ -35,11 +36,15 @@ function show(id) {
     const target = document.getElementById(id);
     if (!target) return;
 
-    // slight delay for smoother transition
-    setTimeout(() => {
-        target.classList.remove("hidden");
-        window.scrollTo(0, 0);
-    }, 50);
+    target.classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+
+    if (id === "letter" || id === "credits") {
+        document.body.style.overflow = "auto";
+    } else {
+        document.body.style.overflow = "hidden";
+    }
 }
 // ================================
 // 🎵 MUSIC
@@ -149,15 +154,19 @@ let prologueIndex = 0;
 function startPrologue() {
     prologueIndex = 0;
 
+    show("prologue");
+
+    // safety: remove leftover glitch states (if any)
+    const prologueScreen = document.getElementById("prologue");
+    if (prologueScreen) {
+        prologueScreen.classList.remove("glitch-shake");
+    }
+
     const text = document.getElementById("prologueText");
 
     typeText(text, prologueLines[0], 28);
-}
-    // safety: remove leftover glitch states (if any)
-    document.getElementById("prologue").classList.remove("glitch-shake");
+};
 
-    show("prologue");
-}
 function nextPrologue() {
     prologueIndex++;
 
