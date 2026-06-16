@@ -190,8 +190,6 @@ p {
 
     text-align: left;
 }
-.text-box, #prologueText, #scoryText {
-    will-change: contents;
 }
 /* ▶ BUTTON */
 .next-btn {
