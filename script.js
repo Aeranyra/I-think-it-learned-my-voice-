@@ -5,7 +5,7 @@
 
 let playerName = "";
 let score = 0;
-let state = "neutral";
+let state = "quiet";
 
 // ================================
 // 🧭 SCREEN SWITCH
@@ -95,8 +95,9 @@ function startPrologue() {
     document.getElementById("prologueText").innerText = prologueLines[0];
 }
 
-function nextPrologue() {
+function nextPrologueStep() {
     prologueIndex++;
+
     if (prologueIndex < prologueLines.length) {
         document.getElementById("prologueText").innerText =
             prologueLines[prologueIndex];
@@ -142,8 +143,9 @@ function startScoryIntro() {
     document.getElementById("scoryText").innerText = scoryLines[0];
 }
 
-function nextScory() {
+function nextScoryStep() {
     scoryIndex++;
+
     if (scoryIndex < scoryLines.length) {
         document.getElementById("scoryText").innerText =
             scoryLines[scoryIndex];
@@ -151,7 +153,6 @@ function nextScory() {
         goQ1();
     }
 }
-
 // ================================
 // ❓ QUESTION SYSTEM
 // ================================
@@ -432,4 +433,15 @@ function restartGame() {
         music.pause();
         music.currentTime = 0;
     }
+}
+// ================================
+// 🕯️ PROLOGUE / SCORY CONTROLLERS (FIX)
+// ================================
+
+function nextPrologue() {
+    nextPrologueStep();
+}
+
+function nextScory() {
+    nextScoryStep();
 }
