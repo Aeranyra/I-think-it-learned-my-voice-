@@ -7,44 +7,34 @@ let playerName = "";
 let score = 0;
 let state = "quiet";
 let isLocked = false;
+let typingInterval = null;
+let isTyping = false;
 
 function typeText(element, text, speed = 25, callback = null) {
+
     if (!element) return;
 
-    let i = 0;
-    element.innerText = "";
+    // ❌ stop previous typing instantly
+    clearInterval(typingInterval);
 
-    const interval = setInterval(() => {
-        element.innerText += text.charAt(i);
+    isTyping = true;
+
+    let i = 0;
+    element.textContent = "";
+
+    typingInterval = setInterval(() => {
+
+        element.textContent += text[i];
         i++;
 
         if (i >= text.length) {
-            clearInterval(interval);
+            clearInterval(typingInterval);
+            isTyping = false;
+
             if (callback) callback();
         }
+
     }, speed);
-}
-// ================================
-// 🧭 SCREEN SWITCH
-// ================================
-
-function show(id) {
-    document.querySelectorAll(".screen").forEach(s => {
-        s.classList.add("hidden");
-    });
-
-    const target = document.getElementById(id);
-    if (!target) return;
-
-    target.classList.remove("hidden");
-
-    window.scrollTo(0, 0);
-
-    if (id === "letter" || id === "credits") {
-        document.body.style.overflow = "auto";
-    } else {
-        document.body.style.overflow = "hidden";
-    }
 }
 // ================================
 // 🎵 MUSIC
@@ -227,6 +217,8 @@ function startScoryIntro() {
 }
 
 function nextScory() {
+    if (isTyping) return; // 🚫 block spam clicks
+
     scoryIndex++;
 
     const text = document.getElementById("scoryText");
