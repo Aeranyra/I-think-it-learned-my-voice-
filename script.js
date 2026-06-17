@@ -1,7 +1,6 @@
 // ================================
 // 🧠 CORE SYSTEM (CLEAN)
 // ================================
-alert("JS LOADED");
 let playerName = "";
 let score = 0;
 let state = "quiet";
