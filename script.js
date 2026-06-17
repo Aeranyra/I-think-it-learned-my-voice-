@@ -34,16 +34,17 @@ function show(id) {
 let typingInterval = null;
 let isTyping = false;
 
-function typeText(element, text, speed = 25, callback = null) {
-    if (!element) return;
+// 🧠 SAFE TYPE SYSTEM
+function stopTyping() {
+    clearInterval(typingInterval);
+    typingInterval = null;
+    isTyping = false;
+}
 
-    if (typingInterval) {
-        clearInterval(typingInterval);
-        typingInterval = null;
-    }
+function typeText(element, text, speed = 25, callback = null) {
+    stopTyping();
 
     isTyping = true;
-
     let i = 0;
     element.innerText = "";
 
@@ -52,19 +53,10 @@ function typeText(element, text, speed = 25, callback = null) {
         i++;
 
         if (i >= text.length) {
-            clearInterval(typingInterval);
-            typingInterval = null;
-            isTyping = false;
-
+            stopTyping();
             if (callback) callback();
         }
     }, speed);
-}
-
-function stopTyping() {
-    clearInterval(typingInterval);
-    typingInterval = null;
-    isTyping = false;
 }
 
 // ================================
