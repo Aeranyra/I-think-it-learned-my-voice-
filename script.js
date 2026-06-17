@@ -112,6 +112,8 @@ function startGame() {
     const error = document.getElementById("nameError");
     const glitchMessage = document.getElementById("glitchMessage");
 
+    if (!input || !error) return;
+
     const rawName = input.value.trim();
 
     const allowedNames = [
@@ -119,35 +121,28 @@ function startGame() {
         "Derxged","Clopeh","Chi","Maybal","Mira"
     ];
 
-    // 🔥 DEBUG SAFE CHECK (important)
     const isValid = allowedNames.includes(rawName);
 
     if (!isValid) {
-
         error.style.display = "block";
         error.innerText = "Entry rejected. You are not listed in the memory index.";
 
-        glitchMessage.innerText = "THE MANOR DOES NOT RECOGNIZE THIS NAME";
-
-        // visual feedback (IMPORTANT so user notices)
-        input.classList.add("glitch-flash");
-
-        setTimeout(() => {
-            input.classList.remove("glitch-flash");
-        }, 800);
+        if (glitchMessage) {
+            glitchMessage.innerText = "THE MANOR DOES NOT RECOGNIZE THIS NAME";
+        }
 
         return;
     }
 
-    // RESET ERROR
     error.style.display = "none";
-    glitchMessage.innerText = "";
+    if (glitchMessage) glitchMessage.innerText = "";
 
     playerName = rawName;
     score = 0;
     state = "quiet";
 
-    setPhase(1);
+    setPhase("1"); // safer than 1 number
+
     show("prologue");
     playMusic("https://files.catbox.moe/65ntst.mp3");
     setBackground("https://files.catbox.moe/zgjmhi.jpg");
