@@ -535,7 +535,28 @@ But I will accept it anyway.`, 26, () => {
         });
     });
 }
-        
+// ================================
+// 🧠 STATE CALCULATION
+// ================================
+
+function calculateState() {
+
+    if (score <= 1) {
+
+        state = "quiet";
+
+    } else if (score <= 2) {
+
+        state = "aware";
+
+    } else {
+
+        state = "sensitive";
+
+    }
+
+    console.log("Player State:", state);
+}
 // ================================
 // 🕯️ PHASE 3 — PERSONALIZATION
 // ================================
@@ -792,6 +813,7 @@ function phase4NyraFinal() {
 // ================================
 
 function phase4Closing() {
+
     const text = document.getElementById("phase4Text");
 
     typeText(text,
@@ -799,55 +821,131 @@ function phase4Closing() {
 
 you will understand why I spoke gently.`, 30, () => {
 
-        startPhase5();
+        typeText(text,
+`Or perhaps you will understand why I did not.`, 30, () => {
+
+            startPhase5();
+
+        });
+
+    });
+}
+// ================================
+// 🕯️ PHASE 5 — ENDING SYSTEM
+// ================================
+
+let endingType = "scory";
+
+// ================================
+// START PHASE 5
+// ================================
+
+function startPhase5() {
+
+    setPhase(5);
+
+    if (state === "sensitive") {
+
+        endingType = "nyra";
+        startNyraEnding();
+
+    } else {
+
+        endingType = "scory";
+        startScoryEnding();
+
+    }
+}
+// ================================
+// 🌿 ENDING A — CONTROLLED SILENCE
+// ================================
+
+function startScoryEnding() {
+
+    show("ending");
+
+    const text = document.getElementById("endingText");
+
+    typeText(text,
+`You have reached the end of what I was permitted to guide.`, 30, () => {
+
+        typeText(text,
+`There is nothing more to ask of you.
+
+And nothing more I am allowed to explain.`, 30, () => {
+
+            typeText(text,
+`If it feels unfinished…
+
+that is because it is meant to feel that way.`, 30, () => {
+
+                typeText(text,
+`I will remain here, as I always have.
+
+Waiting for the next entry that may or may not come.`, 30, () => {
+
+                    typeText(text,
+`Thank you for allowing me to speak to you properly.`, 30, () => {
+
+                        // Existing letter system
+                        showLetter();
+
+                    });
+
+                });
+
+            });
+
+        });
+
     });
 }
 
 // ================================
-// ❓ QUESTION SYSTEM
+// 🕳️ ENDING B — SEALED MEMORY
 // ================================
 
-function goQ1() {
-    show("q1");
+function startNyraEnding() {
+
+    show("ending");
+
+    const text = document.getElementById("endingText");
+
+    typeText(text,
+`I should have stopped earlier.`, 30, () => {
+
+        typeText(text,
+`But I didn't want to.`, 30, () => {
+
+            typeText(text,
+`Everything you went through was shaped by how I chose to speak to you.`, 30, () => {
+
+                typeText(text,
+`I kept this place closed so I wouldn't lose the feeling of it.`, 30, () => {
+
+                    typeText(text,
+`I was only trying to be gentle...`, 30, () => {
+
+    typeText(text,
+`This was never just a game.
+
+It was the only way I could say it without interrupting you.`, 30, () => {
+
+        showLetter();
+
+    });
+
+});
+
+                });
+
+            });
+
+        });
+
+    });
+
 }
-
-function answerQ1(v) {
-    score += v;
-    goQ2();
-}
-
-function goQ2() {
-    show("q2");
-}
-
-function answerQ2(v) {
-    score += v;
-    goIllusion();
-}
-
-function goIllusion() {
-    show("illusion");
-}
-
-function illusionChoice(v) {
-    score += v;
-    goConvergence();
-}
-
-function goConvergence() {
-    show("convergence");
-}
-
-// ================================
-// 🧠 STATE CALCULATION
-// ================================
-
-function calculateState() {
-    if (score <= 2) state = "quiet";
-    else if (score <= 5) state = "aware";
-    else state = "sensitive";
-}
-
 // ================================
 // 🌿 ENDING SYSTEM
 // ================================
