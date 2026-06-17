@@ -146,23 +146,10 @@ show("prologue");
 playMusic("https://files.catbox.moe/65ntst.mp3");
 setBackground("https://files.catbox.moe/zgjmhi.jpg");
 startPrologue();
-    startPrologue();
+
 }
 
-    // ✅ VALID ENTRY ONLY BEYOND THIS POINT
-    error.style.display = "none";
-
-    playerName = rawName;
-    score = 0;
-    state = "quiet";
-
-    show("prologue");
-
-    playMusic("https://files.catbox.moe/65ntst.mp3");
-    setBackground("https://files.catbox.moe/zgjmhi.jpg");
-
-    startPrologue();
-}
+ 
 
 // ================================
 // 🕯️ PROLOGUE
@@ -259,19 +246,83 @@ function startScoryIntro() {
     typeText(text, scoryLines[0], 28);
 }
 function nextScory() {
-    if (isTyping) return; // 🚫 block spam clicks
+
+    if (isTyping) return;
 
     scoryIndex++;
 
     const text = document.getElementById("scoryText");
 
     if (scoryIndex < scoryLines.length) {
+
         typeText(text, scoryLines[scoryIndex], 28);
-    else {
-    goEntryResponse();
+
+    } else {
+
+        startPhase1();
+
+    }
 }
+// ================================
+// 🧭 PHASE 1 — ENTRY RESPONSE
+// ================================
+
+let phase1Index = 0;
+let phase1Step = 0;
+
+// hidden tracking (optional later use)
+let phase1State = "unset"; 
+// quiet | aware | sensitive
+
+// ================================
+// 🧭 START PHASE 1
+// ================================
+
+function startPhase1() {
+    phase1Index = 0;
+    phase1Step = 0;
+
+    show("phase1");
+
+    const text = document.getElementById("phase1Text");
+
+    typeText(text,
+`Before we continue…
+I will ask something simple.`, 28);
 }
-e for later branching)
+
+// ================================
+// 🧭 PHASE 1 NAVIGATION
+// ================================
+
+function nextPhase1() {
+    const text = document.getElementById("phase1Text");
+
+    phase1Step++;
+
+    if (phase1Step === 1) {
+        typeText(text,
+`There is no correct answer.
+
+Only what you choose to leave behind.
+
+When you are alone…
+what do you usually hear first?`, 28);
+    }
+
+    else if (phase1Step === 2) {
+        typeText(text,
+`Do you feel more comfortable when something is watching you?`, 28);
+    }
+}
+
+// ================================
+// 🧭 QUESTION 1 ANSWER
+// ================================
+
+function answerPhase1_q1(choice) {
+
+    // scoring (kept simple for later branching)
     if (choice === 0) score += 0; // silence
     if (choice === 1) score += 1; // thoughts
     if (choice === 2) score += 2; // someone else
@@ -329,56 +380,8 @@ Or when you are.`, 28, () => {
         }, 500);
     });
 }
-// ================================
-// 🕯️ PHASE 2 — ILLUSION CHOICE
-// ================================
 
-let phase2Step = 0;
-let phase2State = "unset";
-// detached | emotional | resistant
 
-let phase2Locked = false;
-
-// ================================
-// START PHASE 2
-// ================================
-
-function startPhase2() {
-    phase2Step = 0;
-    phase2State = "unset";
-    phase2Locked = false;
-
-    show("phase2");
-
-    const text = document.getElementById("phase2Text");
-
-    typeText(text,
-`We will now proceed to something slightly more personal.
-
-This is not a test.
-
-It only determines how I should speak to you.`, 28, () => {
-        nextPhase2_q1();
-    });
-}
-
-// ================================
-// QUESTION 1
-// ================================
-
-function nextPhase2_q1() {
-    phase2Step = 1;
-
-    const text = document.getElementById("phase2Text");
-
-    typeText(text,
-`If something stayed with you even after you stopped thinking about it…
-what would you call it?
-
-A memory
-A feeling
-Something else`, 28);
-}
 
 // ================================
 // 🕯️ PHASE 2 — ILLUSION CHOICE
@@ -532,16 +535,274 @@ But I will accept it anyway.`, 26, () => {
         });
     });
 }
+        
 // ================================
-// PHASE 3 TRANSITION (HOOK)
+// 🕯️ PHASE 3 — PERSONALIZATION
 // ================================
+
+let phase3Locked = false;
 
 function startPhase3() {
 
-    calculateState(); // IMPORTANT: connects to your main system
+    phase3Locked = false;
 
-    goQ1(); // continue main game system
+    show("phase3");
+
+    const text = document.getElementById("phase3Text");
+
+    // determine hidden state
+    calculateState();
+
+    let branchText = "";
+
+    // ================================
+    // TONE SPLIT (SCORY)
+    // ================================
+
+    if (state === "quiet") {
+
+        branchText =
+`There is no urgency in your answers.
+
+That is acceptable here.`;
+
+    }
+
+    else if (state === "aware") {
+
+        branchText =
+`You seem to observe things carefully.
+
+That will be noted.`;
+
+    }
+
+    else {
+
+        branchText =
+`You are not the only one who feels that way.
+
+I should not have said that.`;
+
+    }
+
+    // ================================
+    // PHASE 3 FLOW
+    // ================================
+
+    typeText(text,
+`Thank you.
+
+Your responses have been noted more precisely than before.
+
+It seems the manor is adjusting.`, 26, () => {
+
+        // branch response
+        typeText(text,
+branchText, 26, () => {
+
+            // nyra leak
+            typeText(text,
+`I didn’t expect the answers to feel familiar.`, 26, () => {
+
+                // scory correction
+                typeText(text,
+`Apologies.
+
+That line was unnecessary.
+
+Please disregard it.`, 26, () => {
+
+                    // personalization section
+                    typeText(text,
+`I have reviewed your responses so far.
+
+There is something consistent in them.
+
+Not in what you chose...
+but in how you chose it.`, 26, () => {
+
+                        typeText(text,
+`I will no longer speak to you as I speak to others.`, 26, () => {
+
+                            typeText(text,
+`This was not originally intended.
+
+But it feels incorrect to ignore it now.`, 26, () => {
+
+                                // reflection prompt
+                                typeText(text,
+`When you answered...
+
+did you feel like you were answering yourself...
+
+or someone else?`, 26, () => {
+
+                                    // nyra bleed
+                                    typeText(text,
+`I noticed the same pattern when I wrote it.`, 26, () => {
+
+                                        // scory interruption
+                                        typeText(text,
+`That statement is not part of the structure.
+
+And yet...
+
+it remains accurate.`, 26, () => {
+
+                                            // personalization lock
+                                            typeText(text,
+`From this point onward, your responses will no longer be treated as general input.
+
+They will be treated as continuity.`, 26, () => {
+
+                                                // final line
+                                                typeText(text,
+`If I speak differently now...
+
+It is because I was allowed to notice you.`, 26, () => {
+
+                                                    // phase 4
+                                                    startPhase4();
+
+                                                });
+
+                                            });
+
+                                        });
+
+                                    });
+
+                                });
+
+                            });
+
+                        });
+
+                    });
+
+                });
+
+            });
+
+        });
+
+    });
+
 }
+// ================================
+// 🕯️ PHASE 4 — CONVERGENCE
+// ================================
+
+function startPhase4() {
+    setPhase(4);
+    show("phase4");
+
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`We are nearing the end of your responses.
+
+From here onward, nothing new will be asked of you.
+
+Only what has already been shaped will remain.`, 30, () => {
+
+        phase4ScoryShift();
+    });
+}
+
+// ================================
+// 🧭 SCORY SHIFT (loss of control tone)
+// ================================
+
+function phase4ScoryShift() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`I was not meant to guide this far.
+
+But I will remain until the end of your understanding.`, 30, () => {
+
+        phase4NyraPresence();
+    });
+}
+
+// ================================
+// 🕳️ NYRA PRESENCE (emotional bleed)
+// ================================
+
+function phase4NyraPresence() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`It is almost time for me to stop pretending this is structured.`, 30, () => {
+
+        phase4Reflection();
+    });
+}
+
+// ================================
+// ❓ FINAL REFLECTION (no choice)
+// ================================
+
+function phase4Reflection() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`If you could go back to your first answer…
+
+Would it still be the same?`, 32, () => {
+
+        phase4ScoryStabilize();
+    });
+}
+
+// ================================
+// 🧭 SCORY FINAL STABILIZATION
+// ================================
+
+function phase4ScoryStabilize() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`I will not correct anything anymore.
+
+Correction implies there was ever a mistake.`, 30, () => {
+
+        phase4NyraFinal();
+    });
+}
+
+// ================================
+// 🕳️ NYRA FINAL PRESSURE MOMENT
+// ================================
+
+function phase4NyraFinal() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`I think I understand why I kept writing it this way.`, 30, () => {
+
+        phase4Closing();
+    });
+}
+
+// ================================
+// 🧭 PHASE 4 END (HOOK TO PHASE 5)
+// ================================
+
+function phase4Closing() {
+    const text = document.getElementById("phase4Text");
+
+    typeText(text,
+`When you reach the end…
+
+you will understand why I spoke gently.`, 30, () => {
+
+        startPhase5();
+    });
+}
+
 // ================================
 // ❓ QUESTION SYSTEM
 // ================================
