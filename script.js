@@ -110,6 +110,7 @@ function setBackground(url) {
 function startGame() {
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
+    const glitchMessage = document.getElementById("glitchMessage");
 
     if (!input) return;
 
@@ -120,34 +121,50 @@ function startGame() {
         "Derxged","Clopeh","Chi","Maybal","Mira"
     ];
 
+    // 🔥 FIX: normalize input (important)
     const isValid = allowedNames.includes(rawName);
 
-    const glitchMessage = document.getElementById("glitchMessage");
-
     if (!isValid) {
+
         error.style.display = "block";
         error.innerText = "Entry rejected. You are not listed in the memory index.";
 
         if (glitchMessage) {
             glitchMessage.innerText = "THE MANOR DOES NOT RECOGNIZE THIS NAME";
+            glitchMessage.classList.add("glitch-shake");
         }
+
+        // 🔥 optional visual feedback
+        input.classList.add("glitch-flash");
+
         return;
     }
 
+    // ✅ RESET ERROR STATE
     error.style.display = "none";
-    glitchMessage.innerText = "";
+    error.innerText = "";
 
+    if (glitchMessage) {
+        glitchMessage.innerText = "";
+        glitchMessage.classList.remove("glitch-shake");
+    }
+
+    input.classList.remove("glitch-flash");
+
+    // =========================
+    // START GAME
+    // =========================
     playerName = rawName;
     score = 0;
     state = "quiet";
 
-setPhase(1);
-show("prologue");
-playMusic("https://files.catbox.moe/65ntst.mp3");
-setBackground("https://files.catbox.moe/zgjmhi.jpg");
-startPrologue();
-
+    setPhase(1);
+    show("prologue");
+    playMusic("https://files.catbox.moe/65ntst.mp3");
+    setBackground("https://files.catbox.moe/zgjmhi.jpg");
+    startPrologue();
 }
+
 
  
 
