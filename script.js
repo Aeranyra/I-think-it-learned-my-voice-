@@ -1,16 +1,18 @@
-
 // ================================
-// 🧠 CORE SYSTEM
+// 🧠 CORE SYSTEM (CLEAN)
 // ================================
 
 let playerName = "";
 let score = 0;
 let state = "quiet";
-let isLocked = false;
-let phase1Done = false;
-let phase = 0;
-let gamePhase = "intro"; 
 
+// SINGLE SOURCE OF TRUTH
+let phase = "intro"; 
+// intro → phase1 → phase2 → phase3 → phase4 → phase5 → ending
+
+// ================================
+// 🖥️ SCREEN SYSTEM
+// ================================
 function show(id) {
     document.querySelectorAll(".screen").forEach(s => {
         s.classList.add("hidden");
@@ -20,23 +22,21 @@ function show(id) {
     if (!target) return;
 
     target.classList.remove("hidden");
-
     window.scrollTo(0, 0);
 
-    if (id === "letter" || id === "credits") {
-        document.body.style.overflow = "auto";
-    } else {
-        document.body.style.overflow = "hidden";
-    }
+    document.body.style.overflow =
+        (id === "letter" || id === "credits") ? "auto" : "hidden";
 }
 
+// ================================
+// ⌨️ TYPEWRITER SYSTEM
+// ================================
 let typingInterval = null;
 let isTyping = false;
 
 function typeText(element, text, speed = 25, callback = null) {
     if (!element) return;
 
-    // HARD STOP previous typing cleanly
     if (typingInterval) {
         clearInterval(typingInterval);
         typingInterval = null;
@@ -62,33 +62,41 @@ function typeText(element, text, speed = 25, callback = null) {
 }
 
 function stopTyping() {
-    if (typingInterval) {
-        clearInterval(typingInterval);
-        typingInterval = null;
-    }
+    clearInterval(typingInterval);
+    typingInterval = null;
     isTyping = false;
 }
-    function setPhase(p) {
-    phase = p;
-    }
-// ================================
-// 🎵 MUSIC
-// ================================
 
+// ================================
+// 🧭 PHASE CONTROL (IMPORTANT)
+// ================================
+function setPhase(p) {
+    phase = p;
+    console.log("Phase changed →", p);
+}
+
+// ================================
+// 🎵 MUSIC (SAFE VERSION)
+// ================================
 const music = document.getElementById("music");
 
-function playMusic(url) {
+async function playMusic(url) {
     if (!music) return;
+
     music.pause();
     music.src = url;
     music.volume = 1;
-    music.play();
+
+    try {
+        await music.play();
+    } catch (e) {
+        console.log("Autoplay blocked until user interaction");
+    }
 }
 
 // ================================
 // 🖼️ BACKGROUND
 // ================================
-
 function setBackground(url) {
     document.body.style.backgroundImage = `url('${url}')`;
     document.body.style.backgroundSize = "cover";
@@ -346,20 +354,35 @@ Still, I will not interpret it for you.
 
 Some answers are closer to me than others.`, 26, () => {
 
-        calculateState();   // IMPORTANT
-        goQ1();             // continue main system
+    calculateState();
+
+    // 🕯️ PHASE 1 CLOSING LINE (NEW)
+    typeText(document.getElementById("phase1Text"),
+`We will continue when the manor is ready.
+
+Or when you are.`, 28, () => {
+
+        startPhase2(); // continue to illusion phase
     });
-} startPhase2();
+});
 // ================================
-// 🧭 PHASE 2 — ILLUSION CHOICE 
+// 🕯️ PHASE 2 — ILLUSION CHOICE
 // ================================
+
 let phase2Step = 0;
 let phase2State = "unset";
 // detached | emotional | resistant
 
+let phase2Locked = false;
+
+// ================================
+// START PHASE 2
+// ================================
+
 function startPhase2() {
     phase2Step = 0;
     phase2State = "unset";
+    phase2Locked = false;
 
     show("phase2");
 
@@ -370,13 +393,19 @@ function startPhase2() {
 
 This is not a test.
 
-It only determines how I should speak to you.`, 28);
-} 
+It only determines how I should speak to you.`, 28, () => {
+        nextPhase2_q1();
+    });
+}
+
+// ================================
+// QUESTION 1
+// ================================
 
 function nextPhase2_q1() {
-    const text = document.getElementById("phase2Text");
-
     phase2Step = 1;
+
+    const text = document.getElementById("phase2Text");
 
     typeText(text,
 `If something stayed with you even after you stopped thinking about it…
@@ -386,28 +415,43 @@ A memory
 A feeling
 Something else`, 28);
 }
+
+// ================================
+// ANSWER QUESTION 1
+// ================================
+
 function answerPhase2_q1(choice) {
 
-    // optional weighting (for tone system later)
+    if (phase2Locked) return;
+    phase2Locked = true;
+
+    // tone tracking (hidden system)
     if (choice === 0) phase2State = "detached";
     if (choice === 1) phase2State = "emotional";
     if (choice === 2) phase2State = "resistant";
 
-    typeText(document.getElementById("phase2Text"),
+    const text = document.getElementById("phase2Text");
+
+    typeText(text,
 `Noted.
 
 That answer will shape how I address you moving forward.
 
 I didn’t plan for it to be described that way.`, 26, () => {
 
+        phase2Locked = false;
         nextPhase2_q2();
     });
 }
 
-function nextPhase2_q2() {
-    const text = document.getElementById("phase2Text");
+// ================================
+// QUESTION 2
+// ================================
 
+function nextPhase2_q2() {
     phase2Step = 2;
+
+    const text = document.getElementById("phase2Text");
 
     typeText(text,
 `If you could remove one silence from your past…
@@ -416,8 +460,18 @@ would you?
 Yes
 No
 I don’t know`, 28);
-}function answerPhase2_q2(choice) {
+}
 
+// ================================
+// ANSWER QUESTION 2
+// ================================
+
+function answerPhase2_q2(choice) {
+
+    if (phase2Locked) return;
+    phase2Locked = true;
+
+    // second tone influence
     if (choice === 0) phase2State = "emotional";
     if (choice === 1) phase2State = "detached";
     if (choice === 2) phase2State = "resistant";
@@ -426,15 +480,15 @@ I don’t know`, 28);
 
     if (choice === 0) {
         response = "Then you still remember it clearly.";
-    } 
-    else if (choice === 1) {
+    } else if (choice === 1) {
         response = "That is also a form of remembering.";
-    } 
-    else {
+    } else {
         response = "Uncertainty is still an answer.";
     }
 
-    typeText(document.getElementById("phase2Text"),
+    const text = document.getElementById("phase2Text");
+
+    typeText(text,
 `${response}
 
 I am beginning to understand your pattern.
@@ -443,12 +497,20 @@ Or perhaps I am being made to believe I do.
 That question was not part of the intended script.
 But I will accept it anyway.`, 26, () => {
 
-        startPhase3(); // next phase hook
+        phase2Locked = false;
+        startPhase3();
     });
-}function startPhase3() {
-    calculateState(); // IMPORTANT
+}
 
-    goQ1(); // continue your main system (or next story layer)
+// ================================
+// PHASE 3 TRANSITION (HOOK)
+// ================================
+
+function startPhase3() {
+
+    calculateState(); // IMPORTANT: connects to your main system
+
+    goQ1(); // continue main game system
 }
 // ================================
 // ❓ QUESTION SYSTEM
