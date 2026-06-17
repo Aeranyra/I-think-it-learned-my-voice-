@@ -108,7 +108,6 @@ function setBackground(url) {
 // ================================
 
 function startGame() {
-    console.log("START CLICKED");
 }
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
