@@ -271,66 +271,7 @@ function nextScory() {
     goEntryResponse();
 }
 }
-// ================================
-// 🧭 PHASE 1 — ENTRY RESPONSE
-// ================================
-
-let phase1Index = 0;
-let phase1Step = 0;
-
-// hidden tracking (optional later use)
-let phase1State = "unset"; 
-// quiet | aware | sensitive
-
-// ================================
-// 🧭 START PHASE 1
-// ================================
-
-function startPhase1() {
-    phase1Index = 0;
-    phase1Step = 0;
-
-    show("phase1");
-
-    const text = document.getElementById("phase1Text");
-
-    typeText(text,
-`Before we continue…
-I will ask something simple.`, 28);
-}
-
-// ================================
-// 🧭 PHASE 1 NAVIGATION
-// ================================
-
-function nextPhase1() {
-    const text = document.getElementById("phase1Text");
-
-    phase1Step++;
-
-    if (phase1Step === 1) {
-        typeText(text,
-`There is no correct answer.
-
-Only what you choose to leave behind.
-
-When you are alone…
-what do you usually hear first?`, 28);
-    }
-
-    else if (phase1Step === 2) {
-        typeText(text,
-`Do you feel more comfortable when something is watching you?`, 28);
-    }
-}
-
-// ================================
-// 🧭 QUESTION 1 ANSWER
-// ================================
-
-function answerPhase1_q1(choice) {
-
-    // scoring (kept simple for later branching)
+e for later branching)
     if (choice === 0) score += 0; // silence
     if (choice === 1) score += 1; // thoughts
     if (choice === 2) score += 2; // someone else
@@ -440,7 +381,59 @@ Something else`, 28);
 }
 
 // ================================
-// ANSWER QUESTION 1
+// 🕯️ PHASE 2 — ILLUSION CHOICE
+// ================================
+
+let phase2Step = 0;
+let phase2State = "unset";
+// detached | emotional | resistant
+
+let phase2Locked = false;
+
+// ================================
+// START PHASE 2
+// ================================
+
+function startPhase2() {
+    phase2Step = 0;
+    phase2State = "unset";
+    phase2Locked = false;
+
+    show("phase2");
+
+    const text = document.getElementById("phase2Text");
+
+    typeText(text,
+`We will now proceed to something slightly more personal.
+
+This is not a test.
+
+It only determines how I should speak to you.`, 28, () => {
+
+        nextPhase2_q1();
+    });
+}
+
+// ================================
+// ❓ ILLUSION QUESTION 1
+// ================================
+
+function nextPhase2_q1() {
+    phase2Step = 1;
+
+    const text = document.getElementById("phase2Text");
+
+    typeText(text,
+`If something stayed with you even after you stopped thinking about it…
+what would you call it?
+
+A memory
+A feeling
+Something else`, 28);
+}
+
+// ================================
+// ANSWER Q1
 // ================================
 
 function answerPhase2_q1(choice) {
@@ -448,27 +441,31 @@ function answerPhase2_q1(choice) {
     if (phase2Locked) return;
     phase2Locked = true;
 
-    // tone tracking (hidden system)
+    // tone mapping (hidden)
     if (choice === 0) phase2State = "detached";
     if (choice === 1) phase2State = "emotional";
     if (choice === 2) phase2State = "resistant";
 
     const text = document.getElementById("phase2Text");
 
+    // 🧭 SCORY RESPONSE
     typeText(text,
 `Noted.
 
-That answer will shape how I address you moving forward.
+That answer will shape how I address you moving forward.`, 26, () => {
 
-I didn’t plan for it to be described that way.`, 26, () => {
+        // 🕳️ NYRA LEAK (IMPORTANT — separate emotional fracture)
+        typeText(text,
+`I didn’t plan for it to be described that way.`, 26, () => {
 
-        phase2Locked = false;
-        nextPhase2_q2();
+            phase2Locked = false;
+            nextPhase2_q2();
+        });
     });
 }
 
 // ================================
-// QUESTION 2
+// ❓ ILLUSION QUESTION 2
 // ================================
 
 function nextPhase2_q2() {
@@ -486,7 +483,7 @@ I don’t know`, 28);
 }
 
 // ================================
-// ANSWER QUESTION 2
+// ANSWER Q2
 // ================================
 
 function answerPhase2_q2(choice) {
@@ -494,13 +491,13 @@ function answerPhase2_q2(choice) {
     if (phase2Locked) return;
     phase2Locked = true;
 
-    // second tone influence
     if (choice === 0) phase2State = "emotional";
     if (choice === 1) phase2State = "detached";
     if (choice === 2) phase2State = "resistant";
 
     let response = "";
 
+    // 🧭 SCORY RESPONSE VARIATION
     if (choice === 0) {
         response = "Then you still remember it clearly.";
     } else if (choice === 1) {
@@ -515,16 +512,26 @@ function answerPhase2_q2(choice) {
 `${response}
 
 I am beginning to understand your pattern.
-Or perhaps I am being made to believe I do.
+Or perhaps I am being made to believe I do.`, 26, () => {
 
-That question was not part of the intended script.
+        // 🕳️ FINAL NYRA PRESSURE MOMENT
+        typeText(text,
+`If I had spoken differently… would you have answered differently?`, 26, () => {
+
+            // 🧭 SCORY STABILIZATION (damage control)
+            typeText(text,
+`That question was not part of the intended script.
+
 But I will accept it anyway.`, 26, () => {
 
-        phase2Locked = false;
-        startPhase3();
+                phase2Locked = false;
+
+                // NEXT PHASE HOOK
+                startPhase3();
+            });
+        });
     });
 }
-
 // ================================
 // PHASE 3 TRANSITION (HOOK)
 // ================================
