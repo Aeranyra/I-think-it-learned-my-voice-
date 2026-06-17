@@ -37,7 +37,7 @@
         <div class="speaker-box">Scory</div>
 
         <div class="text-box">
-            <p id="prologueText">Welcome.</p>
+            <p id="prologueText"></p>
         </div>
 
         <button onclick="nextPrologue()" class="next-btn">
@@ -54,7 +54,7 @@
         <div class="speaker-box">Scory</div>
 
         <div class="text-box">
-            <p id="scoryText">I will guide you through this place.</p>
+            <p id="scoryText"></p>
         </div>
 
         <button onclick="nextScory()" class="next-btn">
@@ -64,63 +64,79 @@
     </div>
 </div>
 
-<!-- ================= QUESTION 1 ================= -->
-<div id="q1" class="screen hidden">
-    <p>When you are alone, what do you hear first?</p>
+<!-- ================= PHASE 1 ================= -->
+<div id="phase1" class="screen hidden">
+    <div class="dialogue-container">
 
-    <button onclick="answerQ1(0)">Silence</button>
-    <button onclick="answerQ1(1)">Thoughts</button>
-    <button onclick="answerQ1(2)">Someone else</button>
+        <p id="phase1Text"></p>
+
+        <button onclick="answerPhase1_q1(0)">Silence</button>
+        <button onclick="answerPhase1_q1(1)">Thoughts</button>
+        <button onclick="answerPhase1_q1(2)">Someone else</button>
+
+        <br><br>
+
+        <button onclick="answerPhase1_q2(0)">Yes</button>
+        <button onclick="answerPhase1_q2(1)">No</button>
+        <button onclick="answerPhase1_q2(2)">I’m not sure</button>
+
+    </div>
 </div>
 
-<!-- ================= QUESTION 2 ================= -->
-<div id="q2" class="screen hidden">
-    <p>Do you feel like something is watching you?</p>
+<!-- ================= PHASE 2 ================= -->
+<div id="phase2" class="screen hidden">
+    <div class="dialogue-container">
 
-    <button onclick="answerQ2(0)">Yes</button>
-    <button onclick="answerQ2(1)">No</button>
-    <button onclick="answerQ2(2)">I’m not sure</button>
+        <p id="phase2Text"></p>
+
+        <button onclick="answerPhase2_q1(0)">Memory</button>
+        <button onclick="answerPhase2_q1(1)">Feeling</button>
+        <button onclick="answerPhase2_q1(2)">Something else</button>
+
+        <br><br>
+
+        <button onclick="answerPhase2_q2(0)">Yes</button>
+        <button onclick="answerPhase2_q2(1)">No</button>
+        <button onclick="answerPhase2_q2(2)">I don’t know</button>
+
+    </div>
 </div>
 
-<!-- ================= BRANCH (NEW PHASE) ================= -->
-<div id="branch" class="screen hidden">
-    <p id="branchText"></p>
+<!-- ================= PHASE 3 ================= -->
+<div id="phase3" class="screen hidden">
+    <div class="dialogue-container">
+        <p id="phase3Text"></p>
+    </div>
 </div>
 
-<!-- ================= ILLUSION ================= -->
-<div id="illusion" class="screen hidden">
-    <p>If something stayed in your mind longer than expected… what is it?</p>
-
-    <button onclick="illusionChoice(0)">Memory</button>
-    <button onclick="illusionChoice(1)">Feeling</button>
-    <button onclick="illusionChoice(2)">Something else</button>
-</div>
-
-<!-- ================= PERSONALIZATION (NEW PHASE) ================= -->
-<div id="personalization" class="screen hidden">
-    <p id="personalText"></p>
-</div>
-
-<!-- ================= CONVERGENCE ================= -->
-<div id="convergence" class="screen hidden">
-    <p>Scory: We are nearing the end of your responses.</p>
-
-    <button onclick="goEnding()">Proceed</button>
+<!-- ================= PHASE 4 ================= -->
+<div id="phase4" class="screen hidden">
+    <div class="dialogue-container">
+        <p id="phase4Text"></p>
+    </div>
 </div>
 
 <!-- ================= ENDING ================= -->
 <div id="ending" class="screen hidden">
-    <h2 id="endingTitle"></h2>
-    <p id="endingText"></p>
+    <div class="dialogue-container">
 
-    <button onclick="showLetter()">View Letter</button>
+        <h2 id="endingTitle"></h2>
+        <p id="endingText"></p>
+
+        <button onclick="showLetter()">View Letter</button>
+
+    </div>
 </div>
 
 <!-- ================= LETTER ================= -->
 <div id="letter" class="screen hidden">
-    <p id="letterText"></p>
+    <div class="dialogue-container">
 
-    <button onclick="showCredits()">End</button>
+        <p id="letterText"></p>
+
+        <button onclick="showCredits()">End</button>
+
+    </div>
 </div>
 
 <!-- ================= CREDITS ================= -->
