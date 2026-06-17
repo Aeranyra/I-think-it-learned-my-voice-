@@ -9,6 +9,7 @@ let state = "quiet";
 let isLocked = false;
 let phase1Done = false;
 let phase = 0;
+let gamePhase = "intro"; 
 
 function show(id) {
     document.querySelectorAll(".screen").forEach(s => {
@@ -267,35 +268,49 @@ function nextScory() {
 // ================================
 
 let phase1Index = 0;
-let phase1State = "unset"; 
+let phase1State = "unset";
 // quiet | aware | sensitive (hidden tracking)
+
+let phase1Step = 0; 
+// 0 = intro
+// 1 = q1
+// 2 = q2
 
 function startPhase1() {
     phase1Index = 0;
+    phase1Step = 0;
+
     show("phase1");
 
     const text = document.getElementById("phase1Text");
 
-    typeText(text, `Before we continue…
+    typeText(text, 
+`Before we continue…
 I will ask something simple.`, 28);
 }
-
 // QUESTION 1
-function nextPhase1_Q1() {
+function nextPhase1() {
     const text = document.getElementById("phase1Text");
 
-    typeText(text,
+    phase1Step++;
+
+    if (phase1Step === 1) {
+        typeText(text,
 `There is no correct answer.
 
 Only what you choose to leave behind.
 
 When you are alone…
 what do you usually hear first?`, 28);
-}
+    }
 
+    else if (phase1Step === 2) {
+        typeText(text,
+`Do you feel more comfortable when something is watching you?`, 28);
+    }
+}
 // ANSWERS
 function answerPhase1_q1(choice) {
-    // 0 silence | 1 thoughts | 2 someone else
 
     if (choice === 0) score += 0;
     if (choice === 1) score += 1;
@@ -308,10 +323,10 @@ That response has been recorded.
 
 It reacts differently depending on who answers…
 but I am not allowed to explain how.`, 26, () => {
-        nextPhase1_Q2();
+
+        nextPhase1(); // move to Q2
     });
 }
-
 // QUESTION 2
 function nextPhase1_Q2() {
     typeText(document.getElementById("phase1Text"),
@@ -319,7 +334,6 @@ function nextPhase1_Q2() {
 }
 
 function answerPhase1_q2(choice) {
-    // 0 yes | 1 no | 2 unsure
 
     if (choice === 0) score += 2;
     if (choice === 1) score += 0;
@@ -331,8 +345,110 @@ function answerPhase1_q2(choice) {
 Still, I will not interpret it for you.
 
 Some answers are closer to me than others.`, 26, () => {
-        goQ1(); // continue to your existing system
+
+        calculateState();   // IMPORTANT
+        goQ1();             // continue main system
     });
+} startPhase2();
+// ================================
+// 🧭 PHASE 2 — ILLUSION CHOICE 
+// ================================
+let phase2Step = 0;
+let phase2State = "unset";
+// detached | emotional | resistant
+
+function startPhase2() {
+    phase2Step = 0;
+    phase2State = "unset";
+
+    show("phase2");
+
+    const text = document.getElementById("phase2Text");
+
+    typeText(text,
+`We will now proceed to something slightly more personal.
+
+This is not a test.
+
+It only determines how I should speak to you.`, 28);
+} 
+
+function nextPhase2_q1() {
+    const text = document.getElementById("phase2Text");
+
+    phase2Step = 1;
+
+    typeText(text,
+`If something stayed with you even after you stopped thinking about it…
+what would you call it?
+
+A memory
+A feeling
+Something else`, 28);
+}
+function answerPhase2_q1(choice) {
+
+    // optional weighting (for tone system later)
+    if (choice === 0) phase2State = "detached";
+    if (choice === 1) phase2State = "emotional";
+    if (choice === 2) phase2State = "resistant";
+
+    typeText(document.getElementById("phase2Text"),
+`Noted.
+
+That answer will shape how I address you moving forward.
+
+I didn’t plan for it to be described that way.`, 26, () => {
+
+        nextPhase2_q2();
+    });
+}
+
+function nextPhase2_q2() {
+    const text = document.getElementById("phase2Text");
+
+    phase2Step = 2;
+
+    typeText(text,
+`If you could remove one silence from your past…
+would you?
+
+Yes
+No
+I don’t know`, 28);
+}function answerPhase2_q2(choice) {
+
+    if (choice === 0) phase2State = "emotional";
+    if (choice === 1) phase2State = "detached";
+    if (choice === 2) phase2State = "resistant";
+
+    let response = "";
+
+    if (choice === 0) {
+        response = "Then you still remember it clearly.";
+    } 
+    else if (choice === 1) {
+        response = "That is also a form of remembering.";
+    } 
+    else {
+        response = "Uncertainty is still an answer.";
+    }
+
+    typeText(document.getElementById("phase2Text"),
+`${response}
+
+I am beginning to understand your pattern.
+Or perhaps I am being made to believe I do.
+
+That question was not part of the intended script.
+But I will accept it anyway.`, 26, () => {
+
+        startPhase3(); // next phase hook
+    });
+}function startPhase3() {
+    calculateState(); // IMPORTANT
+
+    goQ1(); // continue your main system (or next story layer)
 }
 // ================================
 // ❓ QUESTION SYSTEM
