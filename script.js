@@ -1,9 +1,7 @@
 // ================================
 // 🧠 CORE SYSTEM (CLEAN)
 // ================================
-window.onload = () => {
-    console.log("GAME LOADED");
-};
+alert("JS LOADED");
 let playerName = "";
 let score = 0;
 let state = "quiet";
