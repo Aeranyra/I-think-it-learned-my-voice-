@@ -1,7 +1,6 @@
 // ================================
 // 🧠 CORE SYSTEM (CLEAN)
 // ================================
-alert("JS LOADED");
 let playerName = "";
 let score = 0;
 let state = "quiet";
@@ -108,7 +107,6 @@ function setBackground(url) {
 // ================================
 
 function startGame() {
-}
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
     const glitchMessage = document.getElementById("glitchMessage");
