@@ -8,24 +8,10 @@ let state = "quiet";
 // SINGLE SOURCE OF TRUTH
 let phase = "intro"; 
 // intro → phase1 → phase2 → phase3 → phase4 → phase5 → ending
-let currentSpeaker = "Scory";
-
-const speakerMap = {
-    scory: "Scory",
-    nyra: "Nyra",
-    manor: "Manor"
-};
-
-function say(who, text, speed = 25, callback = null) {
-
-    const box = document.getElementById("speakerName");
-    const target = document.getElementById("activeText");
-
-    if (box) box.innerText = speakerMap[who] || who;
-
-    stopTyping();
-
-    typeText(target, text, speed, callback);
+function setSpeaker(name) {
+    document.querySelectorAll(".speaker-box").forEach(box => {
+        box.innerText = name;
+    });
 }
 // ================================
 // 🖥️ SCREEN SYSTEM
