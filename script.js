@@ -282,7 +282,9 @@ function startPhase1() {
 
     typeText(text,
 `Before we continue…
-I will ask something simple.`, 28);
+I will ask something simple.`, 28, () => {
+        nextPhase1();
+    });
 }
 
 // ================================
@@ -886,7 +888,6 @@ Waiting for the next entry that may or may not come.`, 30, () => {
         }, 2500);
 
     });
-}
 
                 });
 
