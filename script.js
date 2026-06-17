@@ -887,10 +887,12 @@ Waiting for the next entry that may or may not come.`, 30, () => {
                     typeText(text,
 `Thank you for allowing me to speak to you properly.`, 30, () => {
 
-                        // Existing letter system
-                        showLetter();
+        setTimeout(() => {
+            showLetter();
+        }, 2500);
 
-                    });
+    });
+}
 
                 });
 
@@ -931,7 +933,9 @@ function startNyraEnding() {
 
 It was the only way I could say it without interrupting you.`, 30, () => {
 
+    setTimeout(() => {
         showLetter();
+    }, 2500);
 
     });
 
@@ -951,11 +955,20 @@ It was the only way I could say it without interrupting you.`, 30, () => {
 // ================================
 
 function goEnding() {
-    calculateState();
-    show("ending");
 
-    if (state === "quiet") scoryEnding();
-    else nyraEnding();
+    calculateState();
+
+    if (state === "sensitive") {
+
+        endingType = "nyra";
+        nyraEnding();
+
+    } else {
+
+        endingType = "scory";
+        scoryEnding();
+
+    }
 }
 
 // ================================
@@ -1182,10 +1195,10 @@ function showLetter() {
 
         let message;
 
-        if (state === "quiet") {
-            message = scoryLetters[playerName];
-        } else {
-            message = nyraLetters[playerName];
+        if (endingType === "scory") {
+    message = scoryLetters[playerName];
+} else {
+    message = nyraLetters[playerName];
         }
 
         // 🧠 safety check
