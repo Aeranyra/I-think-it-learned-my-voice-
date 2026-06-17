@@ -278,6 +278,9 @@ function startPhase1() {
 
     show("phase1");
 
+    document.getElementById("phase1-q1-buttons").style.display = "none";
+    document.getElementById("phase1-q2-buttons").style.display = "none";
+
     const text = document.getElementById("phase1Text");
 
     typeText(text,
@@ -303,12 +306,16 @@ function nextPhase1() {
 Only what you choose to leave behind.
 
 When you are alone…
-what do you usually hear first?`, 28);
+what do you usually hear first?`, 28, () => {
+            document.getElementById("phase1-q1-buttons").style.display = "block";
+        });
     }
 
     else if (phase1Step === 2) {
         typeText(text,
-`Do you feel more comfortable when something is watching you?`, 28);
+`Do you feel more comfortable when something is watching you?`, 28, () => {
+            document.getElementById("phase1-q2-buttons").style.display = "block";
+        });
     }
 }
 
@@ -317,6 +324,8 @@ what do you usually hear first?`, 28);
 // ================================
 
 function answerPhase1_q1(choice) {
+
+    document.getElementById("phase1-q1-buttons").style.display = "none";
 
     // scoring (kept simple for later branching)
     if (choice === 0) score += 0; // silence
@@ -400,6 +409,9 @@ function startPhase2() {
 
     show("phase2");
 
+    document.getElementById("phase2-q1-buttons").style.display = "none";
+    document.getElementById("phase2-q2-buttons").style.display = "none";
+
     const text = document.getElementById("phase2Text");
 
     typeText(text,
@@ -428,7 +440,9 @@ what would you call it?
 
 A memory
 A feeling
-Something else`, 28);
+Something else`, 28, () => {
+        document.getElementById("phase2-q1-buttons").style.display = "block";
+    });
 }
 
 // ================================
@@ -439,6 +453,8 @@ function answerPhase2_q1(choice) {
 
     if (phase2Locked) return;
     phase2Locked = true;
+
+    document.getElementById("phase2-q1-buttons").style.display = "none";
 
     // tone mapping (hidden)
     if (choice === 0) phase2State = "detached";
@@ -478,7 +494,9 @@ would you?
 
 Yes
 No
-I don’t know`, 28);
+I don’t know`, 28, () => {
+        document.getElementById("phase2-q2-buttons").style.display = "block";
+    });
 }
 
 // ================================
