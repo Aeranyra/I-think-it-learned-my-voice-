@@ -108,7 +108,6 @@ function setBackground(url) {
 // ================================
 
 function startGame() {
-}
     const input = document.getElementById("nameInput");
     const error = document.getElementById("nameError");
     const glitchMessage = document.getElementById("glitchMessage");
@@ -146,7 +145,7 @@ function startGame() {
         console.error("START ERROR:", e);
         alert("Game failed to start. Check console.");
     }
-}
+}        
 // ================================
 // 🕯️ PROLOGUE
 // ================================
@@ -883,12 +882,11 @@ Waiting for the next entry that may or may not come.`, 30, () => {
                     typeText(text,
 `Thank you for allowing me to speak to you properly.`, 30, () => {
 
-        setTimeout(() => {
-            showLetter();
-        }, 2500);
+                        setTimeout(() => {
+                            showLetter();
+                        }, 2500);
 
-    });
-}
+                    });
 
                 });
 
@@ -897,8 +895,8 @@ Waiting for the next entry that may or may not come.`, 30, () => {
         });
 
     });
-}
 
+}
 // ================================
 // 🕳️ ENDING B — SEALED MEMORY
 // ================================
@@ -924,18 +922,19 @@ function startNyraEnding() {
                     typeText(text,
 `I was only trying to be gentle...`, 30, () => {
 
-    typeText(text,
+                        typeText(text,
 `This was never just a game.
 
 It was the only way I could say it without interrupting you.`, 30, () => {
 
-    setTimeout(() => {
-        showLetter();
-    }, 2500);
+                            // final delay → letter
+                            setTimeout(() => {
+                                showLetter();
+                            }, 2500);
 
-    });
+                        });
 
-});
+                    });
 
                 });
 
