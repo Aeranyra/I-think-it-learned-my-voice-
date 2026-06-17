@@ -276,13 +276,15 @@ function nextScory() {
 // ================================
 
 let phase1Index = 0;
-let phase1State = "unset";
-// quiet | aware | sensitive (hidden tracking)
+let phase1Step = 0;
 
-let phase1Step = 0; 
-// 0 = intro
-// 1 = q1
-// 2 = q2
+// hidden tracking (optional later use)
+let phase1State = "unset"; 
+// quiet | aware | sensitive
+
+// ================================
+// 🧭 START PHASE 1
+// ================================
 
 function startPhase1() {
     phase1Index = 0;
@@ -292,11 +294,15 @@ function startPhase1() {
 
     const text = document.getElementById("phase1Text");
 
-    typeText(text, 
+    typeText(text,
 `Before we continue…
 I will ask something simple.`, 28);
 }
-// QUESTION 1
+
+// ================================
+// 🧭 PHASE 1 NAVIGATION
+// ================================
+
 function nextPhase1() {
     const text = document.getElementById("phase1Text");
 
@@ -317,14 +323,21 @@ what do you usually hear first?`, 28);
 `Do you feel more comfortable when something is watching you?`, 28);
     }
 }
-// ANSWERS
+
+// ================================
+// 🧭 QUESTION 1 ANSWER
+// ================================
+
 function answerPhase1_q1(choice) {
 
-    if (choice === 0) score += 0;
-    if (choice === 1) score += 1;
-    if (choice === 2) score += 2;
+    // scoring (kept simple for later branching)
+    if (choice === 0) score += 0; // silence
+    if (choice === 1) score += 1; // thoughts
+    if (choice === 2) score += 2; // someone else
 
-    typeText(document.getElementById("phase1Text"),
+    const text = document.getElementById("phase1Text");
+
+    typeText(text,
 `I see.
 
 That response has been recorded.
@@ -332,39 +345,49 @@ That response has been recorded.
 It reacts differently depending on who answers…
 but I am not allowed to explain how.`, 26, () => {
 
-        nextPhase1(); // move to Q2
+        // move to Q2
+        nextPhase1();
     });
 }
-// QUESTION 2
-function nextPhase1_Q2() {
-    typeText(document.getElementById("phase1Text"),
-`Do you feel more comfortable when something is watching you?`, 26);
-}
+
+// ================================
+// 🧭 QUESTION 2 ANSWER
+// ================================
 
 function answerPhase1_q2(choice) {
 
-    if (choice === 0) score += 2;
-    if (choice === 1) score += 0;
-    if (choice === 2) score += 1;
+    if (choice === 0) score += 2; // yes
+    if (choice === 1) score += 0; // no
+    if (choice === 2) score += 1; // unsure
 
-    typeText(document.getElementById("phase1Text"),
+    const text = document.getElementById("phase1Text");
+
+    typeText(text,
 `That is… more common than you might expect.
 
-Still, I will not interpret it for you.
+Still, I will not interpret it for you.`, 26, () => {
 
-Some answers are closer to me than others.`, 26, () => {
+        // 🧭 NYRA LEAK (IMPORTANT — separate system voice)
+        setTimeout(() => {
+            typeText(text,
+`Some answers are closer to me than others.`, 26, () => {
 
-    calculateState();
-
-    // 🕯️ PHASE 1 CLOSING LINE (NEW)
-    typeText(document.getElementById("phase1Text"),
+                // 🧭 PHASE 1 CLOSING (SCORY)
+                setTimeout(() => {
+                    typeText(text,
 `We will continue when the manor is ready.
 
 Or when you are.`, 28, () => {
 
-        startPhase2(); // continue to illusion phase
+                        calculateState(); // IMPORTANT
+                        startPhase2(); // go to Phase 2
+                    });
+                }, 600);
+
+            });
+        }, 500);
     });
-});
+}
 // ================================
 // 🕯️ PHASE 2 — ILLUSION CHOICE
 // ================================
