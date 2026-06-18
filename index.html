@@ -4,16 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I think it learned my voice</title>
-
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= AUDIO ================= -->
 <audio id="music" loop></audio>
 
-<!-- ================= TITLE SCREEN ================= -->
+<!-- TITLE SCREEN -->
 <div id="titleScreen" class="screen">
     <h1>I think it learned my voice</h1>
 
@@ -28,11 +26,11 @@
     <button onclick="startGame()">START</button>
 </div>
 
-<!-- ================= PROLOGUE ================= -->
+<!-- PROLOGUE -->
 <div id="prologue" class="screen hidden">
     <div class="dialogue-container">
 
-        <img id="scoryImage" src="https://files.catbox.moe/1rf6iw.png" />
+        <img id="scoryImage" src="https://files.catbox.moe/1rf6iw.png">
 
         <div class="speaker-box">Scory</div>
 
@@ -47,7 +45,7 @@
     </div>
 </div>
 
-<!-- ================= SCORY INTRO ================= -->
+<!-- SCORY INTRO -->
 <div id="scoryIntro" class="screen hidden">
     <div class="dialogue-container">
 
@@ -64,7 +62,7 @@
     </div>
 </div>
 
-<!-- ================= PHASE 1 ================= -->
+<!-- PHASE 1 -->
 <div id="phase1" class="screen hidden">
     <div class="dialogue-container">
 
@@ -82,114 +80,119 @@
 
         <button onclick="answerPhase1_q2(0)">Yes</button>
         <button onclick="answerPhase1_q2(1)">No</button>
-        <button onclick="answerPhase1_q2(2)">I’m not sure</button>
+        <button onclick="answerPhase1_q2(2)">I'm not sure</button>
 
     </div>
 </div>
-        <h2 id="endingTitle"></h2>
-        <p id="endingText"></p>
+
+<!-- PHASE 2 -->
+<div id="phase2" class="screen hidden">
+    <div class="dialogue-container">
+
+        <div class="speaker-box">Scory</div>
+
+        <div class="text-box">
+            <p id="phase2Text"></p>
+        </div>
+
+        <button onclick="answerPhase2_q1(0)">Memory</button>
+        <button onclick="answerPhase2_q1(1)">Feeling</button>
+        <button onclick="answerPhase2_q1(2)">Something else</button>
+
+        <br><br>
+
+        <button onclick="answerPhase2_q2(0)">Yes</button>
+        <button onclick="answerPhase2_q2(1)">No</button>
+        <button onclick="answerPhase2_q2(2)">I don't know</button>
+
+    </div>
+</div>
+
+<!-- PHASE 3 -->
+<div id="phase3" class="screen hidden">
+    <div class="dialogue-container">
+
+        <div class="speaker-box">Scory</div>
+
+        <div class="text-box">
+            <p id="phase3Text"></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- PHASE 4 -->
+<div id="phase4" class="screen hidden">
+    <div class="dialogue-container">
+
+        <div class="speaker-box">Scory</div>
+
+        <div class="text-box">
+            <p id="phase4Text"></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- ENDING -->
+<div id="ending" class="screen hidden">
+    <div class="dialogue-container">
+
+        <div class="speaker-box">Scory</div>
+
+        <div class="text-box">
+            <h2 id="endingTitle"></h2>
+            <p id="endingText"></p>
+        </div>
 
         <button onclick="showLetter()">View Letter</button>
 
     </div>
 </div>
 
-<!-- ================= PHASE 2 ================= -->
-
-<div id="phase2" class="screen hidden">
-    <div class="dialogue-container">
-
-```
-    <div class="speaker-box">Scory</div>
-
-    <div class="text-box">
-        <p id="phase2Text"></p>
-    </div>
-
-    <button onclick="answerPhase2_q1(0)">Memory</button>
-    <button onclick="answerPhase2_q1(1)">Feeling</button>
-    <button onclick="answerPhase2_q1(2)">Something else</button>
-
-    <br><br>
-
-    <button onclick="answerPhase2_q2(0)">Yes</button>
-    <button onclick="answerPhase2_q2(1)">No</button>
-    <button onclick="answerPhase2_q2(2)">I don't know</button>
-
-</div>
-```
-
-</div>
-
-<!-- ================= PHASE 3 ================= -->
-
-<div id="phase3" class="screen hidden">
-    <div class="dialogue-container">
-
-```
-    <div class="speaker-box">Scory</div>
-
-    <div class="text-box">
-        <p id="phase3Text"></p>
-    </div>
-
-</div>
-```
-
-</div>
-
-<!-- ================= PHASE 4 ================= -->
-
-<div id="phase4" class="screen hidden">
-    <div class="dialogue-container">
-
-```
-    <div class="speaker-box">Scory</div>
-
-    <div class="text-box">
-        <p id="phase4Text"></p>
-    </div>
-
-</div>
-```
-
-</div>
-
-<!-- ================= ENDING ================= -->
-
-<div id="ending" class="screen hidden">
-    <div class="dialogue-container">
-
-```
-    <div class="speaker-box">Scory</div>
-
-    <div class="text-box">
-        <h2 id="endingTitle"></h2>
-        <p id="endingText"></p>
-    </div>
-
-    <button onclick="showLetter()">View Letter</button>
-
-</div>
-```
-
-</div>
-
-<!-- ================= LETTER ================= -->
-
+<!-- LETTER -->
 <div id="letter" class="screen hidden">
     <div class="dialogue-container">
 
-```
-    <div class="speaker-box">Scory</div>
+        <div class="speaker-box">Scory</div>
 
-    <div class="text-box">
-        <p id="letterText"></p>
+        <div class="text-box">
+            <p id="letterText"></p>
+        </div>
+
+        <button onclick="showCredits()">End</button>
+
     </div>
+</div>
 
-    <button onclick="showCredits()">End</button>
+<!-- CREDITS -->
+<div id="credits" class="screen hidden">
+
+    <h2>Credits</h2>
+
+    <p>Scory — Attendant</p>
+    <p>Nyra — Game Master</p>
+
+    <br>
+
+    <p>CheonsuMa</p>
+    <p>Ashnyxion</p>
+    <p>Yoon</p>
+    <p>Xian</p>
+    <p>Uris</p>
+    <p>Derxged</p>
+    <p>Clopeh</p>
+    <p>Chi</p>
+    <p>Maybal</p>
+    <p>Mira</p>
+
+    <br>
+
+    <button onclick="restartGame()">Restart</button>
 
 </div>
-```
 
-</div>
+<script src="script.js"></script>
+
+</body>
+</html>
