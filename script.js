@@ -265,7 +265,7 @@ let phase1State = "unset";
 // quiet | aware | sensitive
 
 // ================================
-// 🧭 START PHASE 1
+// 🧭 PHASE 1 START
 // ================================
 
 function startPhase1() {
@@ -273,6 +273,8 @@ function startPhase1() {
     phase1Step = 0;
 
     show("phase1");
+
+    setSpeaker("Scory");
 
     const text = document.getElementById("phase1Text");
 
@@ -291,6 +293,9 @@ function nextPhase1() {
     phase1Step++;
 
     if (phase1Step === 1) {
+
+        setSpeaker("Scory");
+
         typeText(text,
 `There is no correct answer.
 
@@ -301,6 +306,9 @@ what do you usually hear first?`, 28);
     }
 
     else if (phase1Step === 2) {
+
+        setSpeaker("Scory");
+
         typeText(text,
 `Do you feel more comfortable when something is watching you?`, 28);
     }
@@ -312,12 +320,13 @@ what do you usually hear first?`, 28);
 
 function answerPhase1_q1(choice) {
 
-    // scoring (kept simple for later branching)
-    if (choice === 0) score += 0; // silence
-    if (choice === 1) score += 1; // thoughts
-    if (choice === 2) score += 2; // someone else
+    if (choice === 0) score += 0;
+    if (choice === 1) score += 1;
+    if (choice === 2) score += 2;
 
     const text = document.getElementById("phase1Text");
+
+    setSpeaker("Scory");
 
     typeText(text,
 `I see.
@@ -327,50 +336,58 @@ That response has been recorded.
 It reacts differently depending on who answers…
 but I am not allowed to explain how.`, 26, () => {
 
-        // move to Q2
         nextPhase1();
     });
 }
-
 // ================================
 // 🧭 QUESTION 2 ANSWER
 // ================================
 
 function answerPhase1_q2(choice) {
 
-    if (choice === 0) score += 2; // yes
-    if (choice === 1) score += 0; // no
-    if (choice === 2) score += 1; // unsure
+    if (choice === 0) score += 2;
+    if (choice === 1) score += 0;
+    if (choice === 2) score += 1;
 
     const text = document.getElementById("phase1Text");
+
+    setSpeaker("Scory");
 
     typeText(text,
 `That is… more common than you might expect.
 
 Still, I will not interpret it for you.`, 26, () => {
 
-        // 🧭 NYRA LEAK (IMPORTANT — separate system voice)
         setTimeout(() => {
+
+            // 👁️ NYRA SWITCH
+            setSpeaker("Nyra");
+
             typeText(text,
 `Some answers are closer to me than others.`, 26, () => {
 
-                // 🧭 PHASE 1 CLOSING (SCORY)
                 setTimeout(() => {
+
+                    // BACK TO SCORY
+                    setSpeaker("Scory");
+
                     typeText(text,
 `We will continue when the manor is ready.
 
 Or when you are.`, 28, () => {
 
-                        calculateState(); // IMPORTANT
-                        startPhase2(); // go to Phase 2
+                        calculateState();
+                        startPhase2();
+
                     });
+
                 }, 600);
 
             });
+
         }, 500);
     });
 }
-
 
 
 // ================================
