@@ -320,15 +320,3 @@ p {
     50% { transform: translateY(-8px); }
     100% { transform: translateY(0px); }
 }
-
-#phase1Text,
-#phase2Text,
-#phase3Text,
-#phase4Text,
-#prologueText,
-#scoryText,
-#endingText,
-#letterText{
-    white-space: pre-line;
-    line-height: 1.8;
-}
