@@ -294,7 +294,7 @@ function nextPhase1() {
 
     if (phase1Step === 1) {
 
-        setSpeaker("Scory");
+        setSpeaker("Manor");
 
         typeText(text,
 `There is no correct answer.
@@ -307,7 +307,7 @@ what do you usually hear first?`, 28);
 
     else if (phase1Step === 2) {
 
-        setSpeaker("Scory");
+        setSpeaker("Manor");
 
         typeText(text,
 `Do you feel more comfortable when something is watching you?`, 28);
