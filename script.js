@@ -413,6 +413,8 @@ function startPhase2() {
 
     const text = document.getElementById("phase2Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `We will now proceed to something slightly more personal.
 
@@ -433,6 +435,8 @@ function nextPhase2_q1() {
 
     const text = document.getElementById("phase2Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `If something stayed with you even after you stopped thinking about it…
 what would you call it?
@@ -459,12 +463,18 @@ function answerPhase2_q1(choice) {
     const text = document.getElementById("phase2Text");
 
     // 🧭 SCORY RESPONSE
+
+    setSpeaker("Scory");
+    
     typeText(text,
 `Noted.
 
 That answer will shape how I address you moving forward.`, 26, () => {
 
         // 🕳️ NYRA LEAK (IMPORTANT — separate emotional fracture)
+
+        setSpeaker("Nyra");
+    
         typeText(text,
 `I didn’t plan for it to be described that way.`, 26, () => {
 
@@ -483,6 +493,8 @@ function nextPhase2_q2() {
 
     const text = document.getElementById("phase2Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `If you could remove one silence from your past…
 would you?
@@ -518,6 +530,8 @@ function answerPhase2_q2(choice) {
 
     const text = document.getElementById("phase2Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `${response}
 
@@ -525,10 +539,16 @@ I am beginning to understand your pattern.
 Or perhaps I am being made to believe I do.`, 26, () => {
 
         // 🕳️ FINAL NYRA PRESSURE MOMENT
+    
+        setSpeaker("Nyra");
+    
         typeText(text,
 `If I had spoken differently… would you have answered differently?`, 26, () => {
 
             // 🧭 SCORY STABILIZATION (damage control)
+
+            setSpeaker("Scory");
+    
             typeText(text,
 `That question was not part of the intended script.
 
@@ -618,6 +638,8 @@ I should not have said that.`;
     // PHASE 3 FLOW
     // ================================
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `Thank you.
 
@@ -630,10 +652,16 @@ It seems the manor is adjusting.`, 26, () => {
 branchText, 26, () => {
 
             // nyra leak
+
+            setSpeaker("Nyra");
+    
             typeText(text,
 `I didn’t expect the answers to feel familiar.`, 26, () => {
 
                 // scory correction
+
+                setSpeaker("Scory");
+    
                 typeText(text,
 `Apologies.
 
@@ -667,10 +695,16 @@ did you feel like you were answering yourself...
 or someone else?`, 26, () => {
 
                                     // nyra bleed
+
+                                    setSpeaker("Nyra");
+    
                                     typeText(text,
 `I noticed the same pattern when I wrote it.`, 26, () => {
 
                                         // scory interruption
+
+                                        setSpeaker("Scory");
+    
                                         typeText(text,
 `That statement is not part of the structure.
 
@@ -728,6 +762,8 @@ function startPhase4() {
 
     const text = document.getElementById("phase4Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `We are nearing the end of your responses.
 
@@ -746,6 +782,8 @@ Only what has already been shaped will remain.`, 30, () => {
 function phase4ScoryShift() {
     const text = document.getElementById("phase4Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `I was not meant to guide this far.
 
@@ -761,7 +799,9 @@ But I will remain until the end of your understanding.`, 30, () => {
 
 function phase4NyraPresence() {
     const text = document.getElementById("phase4Text");
-
+    
+setSpeaker("Nyra");
+    
     typeText(text,
 `It is almost time for me to stop pretending this is structured.`, 30, () => {
 
@@ -776,6 +816,8 @@ function phase4NyraPresence() {
 function phase4Reflection() {
     const text = document.getElementById("phase4Text");
 
+    setSpeaker("Nyra");
+    
     typeText(text,
 `If you could go back to your first answer…
 
@@ -792,6 +834,9 @@ Would it still be the same?`, 32, () => {
 function phase4ScoryStabilize() {
     const text = document.getElementById("phase4Text");
 
+
+    setSpeaker("Scory");
+    
     typeText(text,
 `I will not correct anything anymore.
 
@@ -808,6 +853,8 @@ Correction implies there was ever a mistake.`, 30, () => {
 function phase4NyraFinal() {
     const text = document.getElementById("phase4Text");
 
+    setSpeaker("Nyra");
+    
     typeText(text,
 `I think I understand why I kept writing it this way.`, 30, () => {
 
@@ -823,11 +870,15 @@ function phase4Closing() {
 
     const text = document.getElementById("phase4Text");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `When you reach the end…
 
 you will understand why I spoke gently.`, 30, () => {
 
+        setSpeaker("Nyra");
+    
         typeText(text,
 `Or perhaps you will understand why I did not.`, 30, () => {
 
@@ -873,6 +924,8 @@ function startScoryEnding() {
 
     const text = document.getElementById("endingText");
 
+    setSpeaker("Scory");
+    
     typeText(text,
 `You have reached the end of what I was permitted to guide.`, 30, () => {
 
@@ -919,6 +972,8 @@ function startNyraEnding() {
 
     const text = document.getElementById("endingText");
 
+    setSpeaker("Nyra");
+    
     typeText(text,
 `I should have stopped earlier.`, 30, () => {
 
