@@ -49,6 +49,36 @@
   }
   .glitch-shake { animation: shake 0.35s linear 0s 2; }
 
+  @keyframes textGlitch {
+    0%, 100% { transform: translate(0); filter: none; opacity: 1; }
+    15% { transform: translate(-2px, 1px); filter: hue-rotate(20deg) saturate(2); opacity: 0.85; }
+    30% { transform: translate(2px, -1px); filter: hue-rotate(-15deg); opacity: 1; }
+    45% { transform: translate(-1px, -1px) skewX(1deg); opacity: 0.7; }
+    60% { transform: translate(1px, 2px); filter: hue-rotate(10deg); }
+    75% { transform: translate(-2px, 0); opacity: 0.9; }
+  }
+  .text-glitch { animation: textGlitch 0.28s linear 0s 4; }
+
+  @keyframes scanFlicker {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.5; }
+  }
+  .glitch-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 998;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(180,150,220,0.06) 0px,
+      rgba(180,150,220,0.06) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+    animation: scanFlicker 0.12s steps(2) 0s 6;
+  }
+
   .game-title { font-size: 1.7rem; font-weight: 400; letter-spacing: 0.1em; color: #c8c0d8; text-align: center; line-height: 1.4; }
   .game-sub { font-size: 0.78rem; letter-spacing: 0.24em; color: #5a5470; text-transform: uppercase; text-align: center; }
   .name-row { display: flex; gap: 8px; width: 100%; max-width: 340px; margin-top: 1.2rem; }

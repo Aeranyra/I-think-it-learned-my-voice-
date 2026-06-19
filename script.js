@@ -123,8 +123,9 @@ function runDialogue(lines, onDone) {
   let idx = 0;
   function next() {
     if (idx >= lines.length) { onDone(); return; }
-    const { speaker, text } = lines[idx++];
+    const { speaker, text, glitch } = lines[idx++];
     setSpeaker(speaker);
+    if (glitch) triggerScreenGlitch(glitch === true ? "soft" : glitch);
     typeText(text, TYPE_SPEED, () => setNext(next));
   }
   next();
@@ -149,6 +150,32 @@ function setBackground(url) {
   document.body.style.backgroundImage = `url('${url}')`;
   document.body.style.backgroundSize = "cover";
   document.body.style.backgroundPosition = "center";
+}
+
+// ================================
+// ⚡ GLITCH EFFECT (reusable)
+// ================================
+// strength: "soft" (screen shake + flash) or "hard" (adds text distortion + scanline overlay)
+function triggerScreenGlitch(strength = "soft") {
+  const activeScreen = document.querySelector('.screen.active');
+  const storyText = document.getElementById('storyText');
+  const overlay = document.createElement('div');
+
+  if (activeScreen) activeScreen.classList.add('glitch-shake');
+  document.body.classList.add('glitch-flash');
+
+  if (strength === "hard") {
+    overlay.className = 'glitch-overlay';
+    document.body.appendChild(overlay);
+    if (storyText) storyText.classList.add('text-glitch');
+    setTimeout(() => overlay.remove(), 800);
+  }
+
+  setTimeout(() => {
+    if (activeScreen) activeScreen.classList.remove('glitch-shake');
+    document.body.classList.remove('glitch-flash');
+    if (storyText) storyText.classList.remove('text-glitch');
+  }, strength === "hard" ? 900 : 500);
 }
 
 // ================================
@@ -221,6 +248,7 @@ const prologueLines = [
 let pIdx = 0;
 function runPrologue() {
   setSpeaker("Scory");
+  setBackground("https://files.catbox.moe/zgjmhi.jpg"); // Prologue
   pIdx = 0;
   typeText(prologueLines[0], TYPE_SPEED);
   setNext(nextPrologueLine);
@@ -252,6 +280,7 @@ let sIdx = 0;
 function runScoryIntro() {
   setSpeaker("Scory");
   sIdx = 0;
+  setBackground("https://files.catbox.moe/oehsde.jpg"); // Scory intro
   playMusic("https://files.catbox.moe/zo3w4o.mp3"); // Personality Test theme
   typeText(scoryLines[0], TYPE_SPEED);
   setNext(nextScoryLine);
@@ -272,6 +301,7 @@ function nextScoryLine() {
 // ================================
 function runPhase1() {
   phase = "phase1";
+  setBackground("https://files.catbox.moe/hjekaq.jpg"); // Phase 1-4
   playMusic("https://files.catbox.moe/iufxfv.mp3"); // Classroom theme
   runDialogue([
     { speaker: "Scory", text: `Before we continue...\nI will ask something simple.` },
@@ -368,10 +398,10 @@ function runPhase3() {
     { speaker: "Nyra",  text: `I didn't expect the answers to feel familiar.` },
     { speaker: "Scory", text: `Apologies.\n\nThat line was unnecessary.\n\nPlease disregard it.` },
     { speaker: "Scory", text: `I have reviewed your responses so far.\n\nThere is something consistent in them.\n\nNot in what you chose...\nbut in how you chose it.` },
-    { speaker: "Scory", text: `I will no longer speak to you as I speak to others.` },
+    { speaker: "Scory", text: `I will no longer speak to you as I speak to others.`, glitch: "hard" },
     { speaker: "Scory", text: `This was not originally intended.\n\nBut it feels incorrect to ignore it now.` },
     { speaker: "Scory", text: `When you answered...\n\ndid you feel like you were answering yourself...\n\nor someone else?` },
-    { speaker: "Nyra",  text: `I noticed the same pattern when I wrote it.` },
+    { speaker: "Nyra",  text: `I noticed the same pattern when I wrote it.`, glitch: "soft" },
     { speaker: "Scory", text: `That statement is not part of the structure.\n\nAnd yet...\n\nit remains accurate.` },
     { speaker: "Scory", text: `From this point onward, your responses will no longer be treated as general input.\n\nThey will be treated as continuity.` },
     { speaker: "Scory", text: `If I speak differently now...\n\nIt is because I was allowed to notice you.` }
@@ -387,7 +417,7 @@ function runPhase4() {
   runDialogue([
     { speaker: "Scory", text: `We are nearing the end of your responses.\n\nFrom here onward, nothing new will be asked of you.\n\nOnly what has already been shaped will remain.` },
     { speaker: "Scory", text: `I was not meant to guide this far.\n\nBut I will remain until the end of your understanding.` },
-    { speaker: "Nyra",  text: `It is almost time for me to stop pretending this is structured.` },
+    { speaker: "Nyra",  text: `It is almost time for me to stop pretending this is structured.`, glitch: "soft" },
     { speaker: "Nyra",  text: `If you could go back to your first answer...\n\nWould it still be the same?` },
     { speaker: "Scory", text: `I will not correct anything anymore.\n\nCorrection implies there was ever a mistake.` },
     { speaker: "Nyra",  text: `I think I understand why I kept writing it this way.` },
@@ -415,7 +445,7 @@ function runPhase5() {
 function scoryEnding() {
   show("endingScreen");
   playMusic("https://files.catbox.moe/sdixkl.mp3"); // Observer ending theme
-  setBackground("https://files.catbox.moe/yw97ze.jpg"); // Final Gate
+  setBackground("https://files.catbox.moe/8aan0e.jpg"); // Controlled Silence ending
   document.getElementById("endingTitle").innerText = "CONTROLLED SILENCE";
 
   const el = document.getElementById("endingText");
@@ -445,7 +475,8 @@ Only as something that was said.`,
 function nyraEnding() {
   show("endingScreen");
   playMusic("https://files.catbox.moe/8aia7g.mp3"); // True ending theme
-  setBackground("https://files.catbox.moe/yw97ze.jpg"); // Final Gate
+  setBackground("https://files.catbox.moe/g0ey56.jpg"); // Sealed Memory ending
+  triggerScreenGlitch("hard");
   document.getElementById("endingTitle").innerText = "SEALED MEMORY";
 
   const el = document.getElementById("endingText");
@@ -612,6 +643,7 @@ function showLetter() {
   if (isTyping) return;
 
   show("letter".concat("Screen"));
+  setBackground("https://files.catbox.moe/z40qio.jpg"); // Letter
 
   const text = document.getElementById("letterText");
 
