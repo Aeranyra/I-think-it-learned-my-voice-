@@ -100,17 +100,38 @@
   }
   .restart-btn:hover { color: #c4bfba; border-color: rgba(180,160,220,0.4); }
 
-  .butterfly {
-    position: fixed;
-    width: 6px; height: 6px;
+  .character-portrait {
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
-    background: rgba(180,150,220,0.55);
+    border: 1px solid rgba(180,160,220,0.25);
+    object-fit: cover;
+    margin-bottom: 0.8rem;
+    background-size: cover;
+    background-position: center top;
+    box-shadow: 0 0 18px rgba(120,80,180,0.2);
+    transition: opacity 0.4s ease, background-image 0.4s ease;
+    align-self: flex-start;
+  }
+  .character-portrait.hidden { display: none !important; }
+
+  .scory-trail {
+    position: fixed;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-image: url('https://files.catbox.moe/1rf6iw.png');
+    background-size: cover;
+    background-position: center top;
     pointer-events: none;
     z-index: 999;
     transform: translate(-50%, -50%);
-    animation: butterflyFade 1s ease-out forwards;
+    animation: scoryFade 1.1s ease-out forwards;
+    border: 1px solid rgba(180,150,220,0.3);
+    box-shadow: 0 0 8px rgba(140,100,200,0.25);
   }
-  @keyframes butterflyFade {
-    0% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
-    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) translateY(-12px); }
+  @keyframes scoryFade {
+    0%   { opacity: 0.75; transform: translate(-50%, -50%) scale(1); }
+    60%  { opacity: 0.4;  transform: translate(-50%, -70%) scale(0.75); }
+    100% { opacity: 0;    transform: translate(-50%, -90%) scale(0.4); }
   }

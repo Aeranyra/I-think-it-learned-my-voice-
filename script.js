@@ -115,8 +115,22 @@ function showChoices(choices) {
 }
 
 // ================================
-// 🎵 MUSIC (SAFE VERSION — drop your own hosted URLs back in if desired)
+// 📜 DIALOGUE QUEUE — every line needs a continue press
 // ================================
+// lines: [ { speaker, text }, ... ]
+// onDone: called after the last line's continue is pressed
+function runDialogue(lines, onDone) {
+  let idx = 0;
+  function next() {
+    if (idx >= lines.length) { onDone(); return; }
+    const { speaker, text } = lines[idx++];
+    setSpeaker(speaker);
+    typeText(text, TYPE_SPEED, () => setNext(next));
+  }
+  next();
+}
+
+
 const music = document.getElementById("music");
 
 async function playMusic(url) {
@@ -259,49 +273,35 @@ function nextScoryLine() {
 function runPhase1() {
   phase = "phase1";
   playMusic("https://files.catbox.moe/iufxfv.mp3"); // Classroom theme
-  setSpeaker("Scory");
-  typeText(`Before we continue...\nI will ask something simple.`, TYPE_SPEED, () => {
-    setNext(() => {
-      setSpeaker("Manor");
-      typeText(`There is no correct answer.\n\nOnly what you choose to leave behind.\n\nWhen you are alone...\nwhat do you usually hear first?`, TYPE_SPEED, () => {
-        showChoices([
-          { label: "Silence", fn: () => { score += 0; afterQ1(); } },
-          { label: "My own thoughts", fn: () => { score += 1; afterQ1(); } },
-          { label: "Something I can't name", fn: () => { score += 2; afterQ1(); } }
-        ]);
-      });
-    });
+  runDialogue([
+    { speaker: "Scory", text: `Before we continue...\nI will ask something simple.` },
+    { speaker: "Manor", text: `There is no correct answer.\n\nOnly what you choose to leave behind.\n\nWhen you are alone...\nwhat do you usually hear first?` }
+  ], () => {
+    showChoices([
+      { label: "Silence",              fn: () => { score += 0; afterQ1(); } },
+      { label: "My own thoughts",      fn: () => { score += 1; afterQ1(); } },
+      { label: "Something I can't name", fn: () => { score += 2; afterQ1(); } }
+    ]);
   });
 }
 function afterQ1() {
-  setSpeaker("Scory");
-  typeText(`I see.\n\nThat response has been recorded.\n\nIt reacts differently depending on who answers...\nbut I am not allowed to explain how.`, TYPE_SPEED, () => {
-    setSpeaker("Manor");
-    typeText(`Do you feel more comfortable when something is watching you?`, TYPE_SPEED, () => {
-      showChoices([
-        { label: "Yes", fn: () => { score += 2; afterQ2(); } },
-        { label: "No", fn: () => { score += 0; afterQ2(); } },
-        { label: "I'm not sure", fn: () => { score += 1; afterQ2(); } }
-      ]);
-    });
+  runDialogue([
+    { speaker: "Scory", text: `I see.\n\nThat response has been recorded.\n\nIt reacts differently depending on who answers...\nbut I am not allowed to explain how.` },
+    { speaker: "Manor", text: `Do you feel more comfortable when something is watching you?` }
+  ], () => {
+    showChoices([
+      { label: "Yes",       fn: () => { score += 2; afterQ2(); } },
+      { label: "No",        fn: () => { score += 0; afterQ2(); } },
+      { label: "I'm not sure", fn: () => { score += 1; afterQ2(); } }
+    ]);
   });
 }
 function afterQ2() {
-  setSpeaker("Scory");
-  typeText(`That is... more common than you might expect.\n\nStill, I will not interpret it for you.`, TYPE_SPEED, () => {
-    setTimeout(() => {
-      setSpeaker("Nyra");
-      typeText(`Some answers are closer to me than others.`, TYPE_SPEED, () => {
-        setTimeout(() => {
-          setSpeaker("Scory");
-          typeText(`We will continue when the manor is ready.\n\nOr when you are.`, TYPE_SPEED, () => {
-            calculateState();
-            setNext(runPhase2);
-          });
-        }, 600);
-      });
-    }, 500);
-  });
+  runDialogue([
+    { speaker: "Scory", text: `That is... more common than you might expect.\n\nStill, I will not interpret it for you.` },
+    { speaker: "Nyra",  text: `Some answers are closer to me than others.` },
+    { speaker: "Scory", text: `We will continue when the manor is ready.\n\nOr when you are.` }
+  ], () => { calculateState(); runPhase2(); });
 }
 function calculateState() {
   if (score <= 1) state = "quiet";
@@ -316,48 +316,37 @@ function calculateState() {
 function runPhase2() {
   phase = "phase2";
   playMusic("https://files.catbox.moe/wo0ygv.mp3"); // Hallway theme
-  setSpeaker("Scory");
-  typeText(`We will now proceed to something slightly more personal.\n\nThis is not a test.\n\nIt only determines how I should speak to you.`, TYPE_SPEED, () => {
-    setTimeout(() => {
-      setSpeaker("Scory");
-      typeText(`If something stayed with you even after you stopped thinking about it...\nwhat would you call it?`, TYPE_SPEED, () => {
-        showChoices([
-          { label: "A memory", fn: () => afterPhase2_q1() },
-          { label: "A feeling", fn: () => afterPhase2_q1() },
-          { label: "Something else", fn: () => afterPhase2_q1() }
-        ]);
-      });
-    }, 400);
+  runDialogue([
+    { speaker: "Scory", text: `We will now proceed to something slightly more personal.\n\nThis is not a test.\n\nIt only determines how I should speak to you.` },
+    { speaker: "Scory", text: `If something stayed with you even after you stopped thinking about it...\nwhat would you call it?` }
+  ], () => {
+    showChoices([
+      { label: "A memory",       fn: () => afterPhase2_q1() },
+      { label: "A feeling",      fn: () => afterPhase2_q1() },
+      { label: "Something else", fn: () => afterPhase2_q1() }
+    ]);
   });
 }
 function afterPhase2_q1() {
-  setSpeaker("Scory");
-  typeText(`Noted.\n\nThat answer will shape how I address you moving forward.`, TYPE_SPEED, () => {
-    setSpeaker("Nyra");
-    typeText(`I didn't plan for it to be described that way.`, TYPE_SPEED, () => {
-      setSpeaker("Scory");
-      typeText(`If you could remove one silence from your past...\nwould you?`, TYPE_SPEED, () => {
-        showChoices([
-          { label: "Yes", fn: () => afterPhase2_q2(0) },
-          { label: "No", fn: () => afterPhase2_q2(1) },
-          { label: "I don't know", fn: () => afterPhase2_q2(2) }
-        ]);
-      });
-    });
+  runDialogue([
+    { speaker: "Scory", text: `Noted.\n\nThat answer will shape how I address you moving forward.` },
+    { speaker: "Nyra",  text: `I didn't plan for it to be described that way.` },
+    { speaker: "Scory", text: `If you could remove one silence from your past...\nwould you?` }
+  ], () => {
+    showChoices([
+      { label: "Yes",          fn: () => afterPhase2_q2(0) },
+      { label: "No",           fn: () => afterPhase2_q2(1) },
+      { label: "I don't know", fn: () => afterPhase2_q2(2) }
+    ]);
   });
 }
 function afterPhase2_q2(c) {
   const r = c === 0 ? "Then you still remember it clearly." : c === 1 ? "That is also a form of remembering." : "Uncertainty is still an answer.";
-  setSpeaker("Scory");
-  typeText(`${r}\n\nI am beginning to understand your pattern.\nOr perhaps I am being made to believe I do.`, TYPE_SPEED, () => {
-    setSpeaker("Nyra");
-    typeText(`If I had spoken differently... would you have answered differently?`, TYPE_SPEED, () => {
-      setSpeaker("Scory");
-      typeText(`That question was not part of the intended script.\n\nBut I will accept it anyway.`, TYPE_SPEED, () => {
-        setNext(runPhase3);
-      });
-    });
-  });
+  runDialogue([
+    { speaker: "Scory", text: `${r}\n\nI am beginning to understand your pattern.\nOr perhaps I am being made to believe I do.` },
+    { speaker: "Nyra",  text: `If I had spoken differently... would you have answered differently?` },
+    { speaker: "Scory", text: `That question was not part of the intended script.\n\nBut I will accept it anyway.` }
+  ], runPhase3);
 }
 
 // ================================
@@ -373,36 +362,20 @@ function runPhase3() {
     ? `You seem to observe things carefully.\n\nThat will be noted.`
     : `You are not the only one who feels that way.\n\nI should not have said that.`;
 
-  setSpeaker("Scory");
-  typeText(`Thank you.\n\nYour responses have been noted more precisely than before.\n\nIt seems the manor is adjusting.`, TYPE_SPEED, () => {
-    typeText(branch, TYPE_SPEED, () => {
-      setSpeaker("Nyra");
-      typeText(`I didn't expect the answers to feel familiar.`, TYPE_SPEED, () => {
-        setSpeaker("Scory");
-        typeText(`Apologies.\n\nThat line was unnecessary.\n\nPlease disregard it.`, TYPE_SPEED, () => {
-          typeText(`I have reviewed your responses so far.\n\nThere is something consistent in them.\n\nNot in what you chose...\nbut in how you chose it.`, TYPE_SPEED, () => {
-            typeText(`I will no longer speak to you as I speak to others.`, TYPE_SPEED, () => {
-              typeText(`This was not originally intended.\n\nBut it feels incorrect to ignore it now.`, TYPE_SPEED, () => {
-                typeText(`When you answered...\n\ndid you feel like you were answering yourself...\n\nor someone else?`, TYPE_SPEED, () => {
-                  setSpeaker("Nyra");
-                  typeText(`I noticed the same pattern when I wrote it.`, TYPE_SPEED, () => {
-                    setSpeaker("Scory");
-                    typeText(`That statement is not part of the structure.\n\nAnd yet...\n\nit remains accurate.`, TYPE_SPEED, () => {
-                      typeText(`From this point onward, your responses will no longer be treated as general input.\n\nThey will be treated as continuity.`, TYPE_SPEED, () => {
-                        typeText(`If I speak differently now...\n\nIt is because I was allowed to notice you.`, TYPE_SPEED, () => {
-                          setNext(runPhase4);
-                        });
-                      });
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  runDialogue([
+    { speaker: "Scory", text: `Thank you.\n\nYour responses have been noted more precisely than before.\n\nIt seems the manor is adjusting.` },
+    { speaker: "Scory", text: branch },
+    { speaker: "Nyra",  text: `I didn't expect the answers to feel familiar.` },
+    { speaker: "Scory", text: `Apologies.\n\nThat line was unnecessary.\n\nPlease disregard it.` },
+    { speaker: "Scory", text: `I have reviewed your responses so far.\n\nThere is something consistent in them.\n\nNot in what you chose...\nbut in how you chose it.` },
+    { speaker: "Scory", text: `I will no longer speak to you as I speak to others.` },
+    { speaker: "Scory", text: `This was not originally intended.\n\nBut it feels incorrect to ignore it now.` },
+    { speaker: "Scory", text: `When you answered...\n\ndid you feel like you were answering yourself...\n\nor someone else?` },
+    { speaker: "Nyra",  text: `I noticed the same pattern when I wrote it.` },
+    { speaker: "Scory", text: `That statement is not part of the structure.\n\nAnd yet...\n\nit remains accurate.` },
+    { speaker: "Scory", text: `From this point onward, your responses will no longer be treated as general input.\n\nThey will be treated as continuity.` },
+    { speaker: "Scory", text: `If I speak differently now...\n\nIt is because I was allowed to notice you.` }
+  ], runPhase4);
 }
 
 // ================================
@@ -411,29 +384,16 @@ function runPhase3() {
 function runPhase4() {
   phase = "phase4";
   playMusic("https://files.catbox.moe/n2esqe.mp3"); // Clock Tower theme
-  setSpeaker("Scory");
-  typeText(`We are nearing the end of your responses.\n\nFrom here onward, nothing new will be asked of you.\n\nOnly what has already been shaped will remain.`, TYPE_SPEED, () => {
-    typeText(`I was not meant to guide this far.\n\nBut I will remain until the end of your understanding.`, TYPE_SPEED, () => {
-      setSpeaker("Nyra");
-      typeText(`It is almost time for me to stop pretending this is structured.`, TYPE_SPEED, () => {
-        typeText(`If you could go back to your first answer...\n\nWould it still be the same?`, TYPE_SPEED, () => {
-          setSpeaker("Scory");
-          typeText(`I will not correct anything anymore.\n\nCorrection implies there was ever a mistake.`, TYPE_SPEED, () => {
-            setSpeaker("Nyra");
-            typeText(`I think I understand why I kept writing it this way.`, TYPE_SPEED, () => {
-              setSpeaker("Scory");
-              typeText(`When you reach the end...\n\nyou will understand why I spoke gently.`, TYPE_SPEED, () => {
-                setSpeaker("Nyra");
-                typeText(`Or perhaps you will understand why I did not.`, TYPE_SPEED, () => {
-                  setNext(runPhase5);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  runDialogue([
+    { speaker: "Scory", text: `We are nearing the end of your responses.\n\nFrom here onward, nothing new will be asked of you.\n\nOnly what has already been shaped will remain.` },
+    { speaker: "Scory", text: `I was not meant to guide this far.\n\nBut I will remain until the end of your understanding.` },
+    { speaker: "Nyra",  text: `It is almost time for me to stop pretending this is structured.` },
+    { speaker: "Nyra",  text: `If you could go back to your first answer...\n\nWould it still be the same?` },
+    { speaker: "Scory", text: `I will not correct anything anymore.\n\nCorrection implies there was ever a mistake.` },
+    { speaker: "Nyra",  text: `I think I understand why I kept writing it this way.` },
+    { speaker: "Scory", text: `When you reach the end...\n\nyou will understand why I spoke gently.` },
+    { speaker: "Nyra",  text: `Or perhaps you will understand why I did not.` }
+  ], runPhase5);
 }
 
 // ================================
@@ -717,24 +677,21 @@ function restartGame() {
 }
 
 // ================================
-// 🦋 CURSOR TRAIL (throttled for performance)
+// 🌸 SCORY CURSOR TRAIL
 // ================================
-let lastButterflyTime = 0;
-const BUTTERFLY_INTERVAL = 60; // ms between spawns
+let lastTrailTime = 0;
+const TRAIL_INTERVAL = 80;
 
 document.addEventListener("mousemove", (e) => {
   const now = Date.now();
-  if (now - lastButterflyTime < BUTTERFLY_INTERVAL) return;
-  lastButterflyTime = now;
+  if (now - lastTrailTime < TRAIL_INTERVAL) return;
+  lastTrailTime = now;
 
   const b = document.createElement("div");
-  b.className = "butterfly";
+  b.className = "scory-trail";
   b.style.left = e.clientX + "px";
   b.style.top = e.clientY + "px";
 
   document.body.appendChild(b);
-
-  setTimeout(() => {
-    b.remove();
-  }, 1000);
+  setTimeout(() => b.remove(), 1200);
 });
