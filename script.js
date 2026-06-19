@@ -399,9 +399,28 @@ function runPhase3() {
     { speaker: "Scory", text: `Apologies.\n\nThat line was unnecessary.\n\nPlease disregard it.` },
     { speaker: "Scory", text: `I have reviewed your responses so far.\n\nThere is something consistent in them.\n\nNot in what you chose...\nbut in how you chose it.` },
     { speaker: "Scory", text: `I will no longer speak to you as I speak to others.`, glitch: "hard" },
-    { speaker: "Scory", text: `This was not originally intended.\n\nBut it feels incorrect to ignore it now.` },
-    { speaker: "Scory", text: `When you answered...\n\ndid you feel like you were answering yourself...\n\nor someone else?` },
-    { speaker: "Nyra",  text: `I noticed the same pattern when I wrote it.`, glitch: "soft" },
+    { speaker: "Scory", text: `This was not originally intended.\n\nBut it feels incorrect to ignore it now.` }
+  ], () => {
+    setSpeaker("Scory");
+    typeText(`When you answered...\n\ndid you feel like you were answering yourself...\n\nor someone else?`, TYPE_SPEED, () => {
+      showChoices([
+        { label: "Myself",       fn: () => afterPhase3_q(0) },
+        { label: "Someone else", fn: () => afterPhase3_q(1) },
+        { label: "I'm not sure", fn: () => afterPhase3_q(2) }
+      ]);
+    });
+  });
+}
+function afterPhase3_q(c) {
+  score += c === 1 ? 2 : c === 2 ? 1 : 0;
+  calculateState();
+  const nyraLine = c === 0
+    ? `I noticed the same pattern when I wrote it.`
+    : c === 1
+    ? `Then perhaps you noticed me before I noticed you.`
+    : `That uncertainty is the most honest answer I've heard.`;
+  runDialogue([
+    { speaker: "Nyra",  text: nyraLine, glitch: "soft" },
     { speaker: "Scory", text: `That statement is not part of the structure.\n\nAnd yet...\n\nit remains accurate.` },
     { speaker: "Scory", text: `From this point onward, your responses will no longer be treated as general input.\n\nThey will be treated as continuity.` },
     { speaker: "Scory", text: `If I speak differently now...\n\nIt is because I was allowed to notice you.` }
@@ -413,13 +432,33 @@ function runPhase3() {
 // ================================
 function runPhase4() {
   phase = "phase4";
+  setBackground("https://files.catbox.moe/hjekaq.jpg"); // Phase 1-4
   playMusic("https://files.catbox.moe/n2esqe.mp3"); // Clock Tower theme
   runDialogue([
     { speaker: "Scory", text: `We are nearing the end of your responses.\n\nFrom here onward, nothing new will be asked of you.\n\nOnly what has already been shaped will remain.` },
     { speaker: "Scory", text: `I was not meant to guide this far.\n\nBut I will remain until the end of your understanding.` },
-    { speaker: "Nyra",  text: `It is almost time for me to stop pretending this is structured.`, glitch: "soft" },
-    { speaker: "Nyra",  text: `If you could go back to your first answer...\n\nWould it still be the same?` },
-    { speaker: "Scory", text: `I will not correct anything anymore.\n\nCorrection implies there was ever a mistake.` },
+    { speaker: "Nyra",  text: `It is almost time for me to stop pretending this is structured.`, glitch: "soft" }
+  ], () => {
+    setSpeaker("Nyra");
+    typeText(`If you could go back to your first answer...\n\nWould it still be the same?`, TYPE_SPEED, () => {
+      showChoices([
+        { label: "Yes",          fn: () => afterPhase4_q(0) },
+        { label: "No",           fn: () => afterPhase4_q(1) },
+        { label: "I don't know", fn: () => afterPhase4_q(2) }
+      ]);
+    });
+  });
+}
+function afterPhase4_q(c) {
+  score += c === 1 ? 2 : c === 2 ? 1 : 0;
+  calculateState();
+  const scoryLine = c === 0
+    ? `I will not correct anything anymore.\n\nConsistency was never the mistake.`
+    : c === 1
+    ? `I will not correct anything anymore.\n\nCorrection implies there was ever a mistake.`
+    : `I will not correct anything anymore.\n\nNot knowing is its own kind of answer.`;
+  runDialogue([
+    { speaker: "Scory", text: scoryLine },
     { speaker: "Nyra",  text: `I think I understand why I kept writing it this way.` },
     { speaker: "Scory", text: `When you reach the end...\n\nyou will understand why I spoke gently.` },
     { speaker: "Nyra",  text: `Or perhaps you will understand why I did not.` }
