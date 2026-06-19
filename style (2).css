@@ -1,0 +1,116 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #0a0a0f;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #d4cfc8;
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    overflow-x: hidden;
+    position: relative;
+    transition: background-image 0.8s ease;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(8,7,12,0.72);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(80,60,120,0.16) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body.glitch-flash::before {
+    background: radial-gradient(ellipse at 50% 30%, rgba(150,40,60,0.28) 0%, transparent 70%);
+  }
+
+  .screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 560px; position: relative; z-index: 1; }
+  .screen.active { display: flex; }
+  .hidden { display: none !important; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(3px); }
+  }
+  .glitch-shake { animation: shake 0.35s linear 0s 2; }
+
+  .game-title { font-size: 1.7rem; font-weight: 400; letter-spacing: 0.1em; color: #c8c0d8; text-align: center; line-height: 1.4; }
+  .game-sub { font-size: 0.78rem; letter-spacing: 0.24em; color: #5a5470; text-transform: uppercase; text-align: center; }
+  .name-row { display: flex; gap: 8px; width: 100%; max-width: 340px; margin-top: 1.2rem; }
+  .name-row input {
+    flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(180,160,220,0.25);
+    border-radius: 4px; color: #c8c0d8; font-family: inherit; font-size: 0.95rem; padding: 10px 14px; outline: none;
+  }
+  .name-row input:focus { border-color: rgba(180,160,220,0.6); }
+  .name-row input::placeholder { color: #3a3450; }
+  .btn-enter {
+    background: rgba(100,80,160,0.25); border: 1px solid rgba(180,160,220,0.3); border-radius: 4px;
+    color: #c8c0d8; font-family: inherit; font-size: 0.9rem; padding: 10px 20px; cursor: pointer; letter-spacing: 0.06em; transition: background 0.2s;
+  }
+  .btn-enter:hover { background: rgba(100,80,160,0.45); }
+  .err-msg { font-size: 0.78rem; color: #8a5060; text-align: center; min-height: 1.2em; margin-top: 0.8rem; letter-spacing: 0.04em; }
+  .glitch-msg { font-size: 0.7rem; letter-spacing: 0.2em; color: #4a3860; text-align: center; min-height: 1em; text-transform: uppercase; margin-top: 0.3rem; }
+
+  .speaker-box {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: #7a6890;
+    border-bottom: 1px solid rgba(120,100,160,0.2); padding-bottom: 8px; width: 100%; margin-bottom: 1.4rem;
+  }
+  .story-text { font-size: 1.02rem; line-height: 1.9; color: #c4bfba; white-space: pre-wrap; width: 100%; min-height: 160px; }
+  .action-area { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 1.2rem; }
+  .btn-next {
+    align-self: flex-end; background: transparent; border: 1px solid rgba(180,160,220,0.2); border-radius: 3px;
+    color: #7a6890; font-family: inherit; font-size: 0.78rem; letter-spacing: 0.14em; padding: 7px 18px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-next:hover { color: #c4bfba; border-color: rgba(180,160,220,0.4); }
+  .btn-next:disabled { opacity: 0.3; cursor: default; }
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice-btn {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(180,160,220,0.15); border-radius: 4px;
+    color: #9a90a8; font-family: inherit; font-size: 0.92rem; padding: 12px 16px; cursor: pointer; text-align: left; line-height: 1.4; transition: all 0.2s;
+  }
+  .choice-btn:hover { background: rgba(100,80,160,0.15); color: #c4bfba; border-color: rgba(180,160,220,0.35); }
+
+  #endingTitle { font-size: 0.78rem; letter-spacing: 0.26em; text-transform: uppercase; color: #6a5a80; text-align: center; margin-bottom: 1.2rem; }
+  #endingText { font-size: 0.98rem; line-height: 1.95; color: #c4bfba; white-space: pre-wrap; width: 100%; min-height: 160px; }
+
+  .letter-body {
+    font-size: 0.95rem; line-height: 2; color: #b4afaa; white-space: pre-wrap; width: 100%;
+    border-left: 1px solid rgba(120,100,160,0.2); padding-left: 1.4rem; min-height: 200px;
+  }
+  .credits-text { font-size: 0.74rem; color: #4a3860; letter-spacing: 0.12em; text-align: center; line-height: 2.1; margin-top: 1.8rem; }
+  .divider { width: 44px; height: 1px; background: rgba(120,100,160,0.2); margin: 1.4rem 0; }
+  .restart-btn {
+    margin-top: 1.5rem; background: transparent; border: 1px solid rgba(180,160,220,0.2); border-radius: 4px;
+    color: #7a6890; font-family: inherit; font-size: 0.75rem; letter-spacing: 0.12em; padding: 8px 18px; cursor: pointer; transition: all 0.2s;
+  }
+  .restart-btn:hover { color: #c4bfba; border-color: rgba(180,160,220,0.4); }
+
+  .butterfly {
+    position: fixed;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(180,150,220,0.55);
+    pointer-events: none;
+    z-index: 999;
+    transform: translate(-50%, -50%);
+    animation: butterflyFade 1s ease-out forwards;
+  }
+  @keyframes butterflyFade {
+    0% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.2) translateY(-12px); }
+  }

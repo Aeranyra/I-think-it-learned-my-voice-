@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Think It Learned My Voice</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="titleScreen" class="screen active">
+  <p class="game-sub">A manor of questions</p>
+  <h1 class="game-title">I Think It Learned<br>My Voice</h1>
+  <p style="font-size:0.82rem;color:#4a3860;text-align:center;line-height:1.8;margin-top:1.2rem;max-width:380px;">
+    Enter your name to begin.<br>The manor only opens for those it recognizes.
+  </p>
+  <div class="name-row">
+    <input id="nameInput" type="text" placeholder="Your name..." autocomplete="off" />
+    <button class="btn-enter" onclick="startGame()">Enter</button>
+  </div>
+  <p class="err-msg" id="nameError"></p>
+  <p class="glitch-msg" id="glitchMessage"></p>
+</div>
+
+<div id="storyScreen" class="screen">
+  <div class="speaker-box" id="speakerBox">—</div>
+  <div class="story-text" id="storyText"></div>
+  <div class="action-area">
+    <div class="choices" id="choicesArea"></div>
+    <button class="btn-next" id="nextBtn" onclick="handleNext()" disabled>continue ›</button>
+  </div>
+</div>
+
+<div id="endingScreen" class="screen">
+  <p id="endingTitle">—</p>
+  <div id="endingText"></div>
+  <div class="action-area">
+    <button class="btn-next" id="endingNextBtn" onclick="showLetter()" disabled>continue ›</button>
+  </div>
+</div>
+
+<div id="letterScreen" class="screen">
+  <p class="game-sub">A letter, left behind</p>
+  <div class="letter-body" id="letterText"></div>
+  <div class="action-area">
+    <button class="btn-next" id="letterNextBtn" onclick="showCredits()" disabled>continue ›</button>
+  </div>
+</div>
+
+<div id="creditsScreen" class="screen">
+  <p class="game-sub">The manor grows quiet</p>
+  <div class="divider"></div>
+  <div class="credits-text">
+    Written and designed by Aeranyra<br>
+    A game about voice, pattern, and the feeling<br>
+    that something learned you back.
+  </div>
+  <button class="restart-btn" onclick="restartGame()">return to the entrance</button>
+</div>
+
+<audio id="music" loop></audio>
+
+<script src="script.js"></script>
+</body>
+</html>
